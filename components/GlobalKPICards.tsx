@@ -142,11 +142,7 @@ export function GlobalKPICards() {
     // Note: selectedGeographies might be empty if we fell back to showing all geographies
     const actualSelectedGeographies = filters.geographies.length > 0 ? filters.geographies : []
     const dataTypeLabel = filters.dataType === 'value' ? 'Market Size' : 'Market Volume'
-    const geographyLabel = actualSelectedGeographies.length === 0 
-      ? 'All Geographies'
-      : actualSelectedGeographies.length === 1
-      ? actualSelectedGeographies[0]
-      : `${actualSelectedGeographies.length} Geographies (${actualSelectedGeographies.slice(0, 2).join(', ')}${actualSelectedGeographies.length > 2 ? '...' : ''})`
+    const geographyLabel = 'Middle East'
     const segmentTypeLabel = targetSegmentType || 'All Segments'
 
     return {
