@@ -1261,9 +1261,6 @@ export function D3BubbleChartIndependent({ title, height = 500 }: BubbleChartPro
               }}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-black"
             >
-              {isOpportunityMode && activeFilters.dataType !== 'volume' && (
-                <option value="">All Product Types</option>
-              )}
               {data?.dimensions?.segments ? Object.keys(data.dimensions.segments)
                 // Filter segment types for volume: only show By Formulation and By Type
                 .filter(option => {
