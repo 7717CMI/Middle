@@ -132,17 +132,12 @@ export function filterData(
       // When a specific level is selected, we need to include records that have data at that level
       const recordLevel = record.aggregation_level
 
-      // For Level 2 (first segment level like Parenteral, Oral, etc.):
-      // - Include aggregated records at level 2 (if they exist)
-      // - Also include leaf records that have a level_1 hierarchy value (to aggregate later)
+      // For Level 2 (first segment level like Products, Services, etc.):
+      // - ONLY include aggregated records at level 2
+      // - Do NOT include leaf records - they would cause double counting
       if (effectiveAggregationLevel === 2) {
-        // Include records at level 2 (aggregated parent segments)
-        if (recordLevel === 2) {
-          // Allow aggregated record at level 2
-        } else if (record.segment_hierarchy?.level_1 && record.segment_hierarchy.level_1.trim() !== '') {
-          // Include leaf records that have level_1 - they will be aggregated by level_1 in chart preparation
-          // But we need to mark them somehow or handle in chart data prep
-        } else {
+        // Only allow records that are exactly at level 2
+        if (recordLevel !== 2) {
           return false
         }
       } else {
@@ -174,23 +169,81 @@ export function filterData(
     } else {
       // When aggregationLevel is null (showing "All Levels"), prevent double-counting
       // Strategy:
-      // - If a PARENT segment is selected (like "Parenteral"), show LEAF records (Intravenous, etc.) NOT the aggregated parent
-      // - If a LEAF segment is selected directly, show that leaf record
-      // - If no segments selected: Only show leaf records (to avoid double-counting)
+      // - Only show LEAF records (is_aggregated=false) by default
+      // - For segments like Services that only have aggregated children at the deepest level,
+      //   include those aggregated children (they have no leaf records under them)
       const hasSegmentFilter = (filters.advancedSegments && filters.advancedSegments.length > 0) ||
                                (filters.segments && filters.segments.length > 0)
 
       if (record.is_aggregated === true) {
-        // ALWAYS exclude aggregated records when user has selected segments
-        // This ensures we show sub-segments (Intravenous, etc.) NOT the parent (Parenteral)
-        // The sub-segments will be shown via the hierarchy matching in the segment filter
-        return false
-      } else {
-        // This is a leaf record
-        // If segments are selected and this leaf's parent segment is selected,
-        // include the leaf record (the segment filter will check hierarchy matching)
-        // (The segment filter already checks hierarchy, so it will match correctly)
+        // Aggregated records should generally be excluded to prevent double-counting
+        // Exception: If this aggregated record has NO children (leaf or aggregated) in the data,
+        // then it IS the deepest level and should be included (e.g., Services sub-segments)
+
+        if (!hasSegmentFilter) {
+          // No segment filter - exclude all aggregated records
+          return false
+        }
+
+        const advancedSegments = filters.advancedSegments || []
+        const hierarchy = record.segment_hierarchy
+
+        // Check if this record IS the selected segment itself (not a child of it)
+        // If so, always exclude it - we want to show children, not the parent
+        let isSelectedSegmentItself = false
+        for (const seg of advancedSegments) {
+          if (seg.type === record.segment_type && seg.segment === record.segment) {
+            isSelectedSegmentItself = true
+            break
+          }
+        }
+
+        if (isSelectedSegmentItself) {
+          // This IS the selected segment - exclude it, we'll show its children instead
+          return false
+        }
+
+        // Check if this record is a child of a selected segment
+        let isChildOfSelected = false
+
+        for (const seg of advancedSegments) {
+          if (seg.type !== record.segment_type) continue
+
+          // Check if selected segment is in the hierarchy (this record is a descendant)
+          if (hierarchy.level_1 === seg.segment || hierarchy.level_2 === seg.segment ||
+              hierarchy.level_3 === seg.segment || hierarchy.level_4 === seg.segment) {
+            isChildOfSelected = true
+            break
+          }
+        }
+
+        if (!isChildOfSelected) {
+          return false
+        }
+
+        // Check if there are any children (leaf or aggregated) that have this segment as a parent
+        // If yes, this is an intermediate parent and should be excluded
+        // If no, this is the deepest level for this branch and should be included
+        const hasChildren = data.some(otherRecord => {
+          if (otherRecord.segment === record.segment) return false // Skip self
+          if (otherRecord.segment_type !== record.segment_type) return false
+          if (otherRecord.geography !== record.geography) return false
+
+          // Check if this other record has our segment as its parent in the hierarchy
+          const otherHierarchy = otherRecord.segment_hierarchy
+          return otherHierarchy.level_1 === record.segment ||
+                 otherHierarchy.level_2 === record.segment ||
+                 otherHierarchy.level_3 === record.segment ||
+                 otherHierarchy.level_4 === record.segment
+        })
+
+        if (hasChildren) {
+          // This aggregated record has children, so exclude it to prevent double-counting
+          return false
+        }
+        // No children found - this is the deepest level (like Services sub-segments), include it
       }
+      // For non-aggregated (leaf) records, let them pass through to segment filter
     }
     
     // 3. Segment type filter - must match
@@ -529,8 +582,6 @@ export function prepareGroupedBarData(
     // This ensures we show parent segments, not sub-segments
     // BUT: Skip this when user has explicitly selected segments - show sub-segments individually
     if (isLevel2 && !hasUserSelectedSegments) {
-      const aggregatedData: Record<string, number> = {}
-
       // Build a child-to-parent mapping from all records
       // This maps sub-segments to their parent (e.g., "Intravenous" -> "Parenteral")
       const childToParentMap = new Map<string, string>()
@@ -567,8 +618,11 @@ export function prepareGroupedBarData(
           allSegments: Array.from(allSegments),
           segmentsWithChildren: Array.from(segmentsWithChildren),
           childToParentMap: Object.fromEntries(childToParentMap),
+          needsStacking,
+          geographiesCount: geographies.length,
           sampleRecords: records.slice(0, 5).map(r => ({
             segment: r.segment,
+            geography: r.geography,
             level1: r.segment_hierarchy?.level_1,
             level2: r.segment_hierarchy?.level_2,
             isAggregated: r.is_aggregated,
@@ -576,6 +630,48 @@ export function prepareGroupedBarData(
           }))
         })
       }
+
+      // Handle stacking for Level 2 with multiple geographies
+      if (needsStacking && viewMode === 'segment-mode') {
+        // Create stacked data: segment::geography format
+        const stackedData = new Map<string, Map<string, number>>() // segment -> geography -> value
+
+        records.forEach(record => {
+          let segmentKey: string
+          const segment = record.segment
+          const geography = record.geography
+
+          // Map to parent segment if needed
+          if (childToParentMap.has(segment)) {
+            segmentKey = childToParentMap.get(segment)!
+          } else if (record.is_aggregated && record.aggregation_level === 2) {
+            segmentKey = segment
+          } else {
+            segmentKey = segment
+          }
+
+          if (!stackedData.has(segmentKey)) {
+            stackedData.set(segmentKey, new Map())
+          }
+
+          const geoMap = stackedData.get(segmentKey)!
+          const currentValue = geoMap.get(geography) || 0
+          geoMap.set(geography, currentValue + (record.time_series[year] || 0))
+        })
+
+        // Create stacked data keys: segment::geography
+        stackedData.forEach((geoMap, segment) => {
+          geoMap.forEach((value, geography) => {
+            const key = `${segment}::${geography}`
+            dataPoint[key] = value
+          })
+        })
+
+        return dataPoint
+      }
+
+      // Non-stacked Level 2 aggregation (original logic)
+      const aggregatedData: Record<string, number> = {}
 
       records.forEach(record => {
         let key: string

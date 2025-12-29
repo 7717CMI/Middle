@@ -34,31 +34,16 @@ export function FilterPanel() {
         </button>
       </div>
 
-      {/* Data Type Toggle */}
+      {/* Data Type - Value only */}
       <div>
         <label className="block text-sm font-medium text-black mb-2">
           Data Type
         </label>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 gap-2">
           <button
-            onClick={() => handleDataTypeChange('value')}
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-              filters.dataType === 'value'
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-black hover:bg-gray-200'
-            }`}
+            className="px-4 py-2 text-sm font-medium rounded-md bg-blue-600 text-white"
           >
             Value
-          </button>
-          <button
-            onClick={() => handleDataTypeChange('volume')}
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-              filters.dataType === 'volume'
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-black hover:bg-gray-200'
-            }`}
-          >
-            Volume
           </button>
         </div>
       </div>

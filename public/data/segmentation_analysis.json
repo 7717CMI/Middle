@@ -259,7 +259,11 @@
       }
     },
     "By Industry": {},
-    "By Country": {}
+    "By Type": {
+      "Small Cooling Towers": {},
+      "Medium Cooling Towers": {},
+      "Large Cooling Towers": {}
+    }
   },
   "UAE": {
     "By Offering": {
@@ -521,7 +525,11 @@
       }
     },
     "By Industry": {},
-    "By Country": {}
+    "By Type": {
+      "Small Cooling Towers": {},
+      "Medium Cooling Towers": {},
+      "Large Cooling Towers": {}
+    }
   },
   "Qatar": {
     "By Offering": {
@@ -783,7 +791,11 @@
       }
     },
     "By Industry": {},
-    "By Country": {}
+    "By Type": {
+      "Small Cooling Towers": {},
+      "Medium Cooling Towers": {},
+      "Large Cooling Towers": {}
+    }
   },
   "Kuwait": {
     "By Offering": {
@@ -1045,7 +1057,11 @@
       }
     },
     "By Industry": {},
-    "By Country": {}
+    "By Type": {
+      "Small Cooling Towers": {},
+      "Medium Cooling Towers": {},
+      "Large Cooling Towers": {}
+    }
   },
   "Oman": {
     "By Offering": {
@@ -1307,7 +1323,11 @@
       }
     },
     "By Industry": {},
-    "By Country": {}
+    "By Type": {
+      "Small Cooling Towers": {},
+      "Medium Cooling Towers": {},
+      "Large Cooling Towers": {}
+    }
   },
   "Bahrain": {
     "By Offering": {
@@ -1569,7 +1589,11 @@
       }
     },
     "By Industry": {},
-    "By Country": {}
+    "By Type": {
+      "Small Cooling Towers": {},
+      "Medium Cooling Towers": {},
+      "Large Cooling Towers": {}
+    }
   },
   "Iran": {
     "By Offering": {
@@ -1831,7 +1855,11 @@
       }
     },
     "By Industry": {},
-    "By Country": {}
+    "By Type": {
+      "Small Cooling Towers": {},
+      "Medium Cooling Towers": {},
+      "Large Cooling Towers": {}
+    }
   },
   "Turkey": {
     "By Offering": {
@@ -1856,244 +1884,20 @@
         }
       },
       "Services": {
-        "Installation and Commissioning": {
-          "Installation and Commissioning": {
-            "Installation and Commissioning": {
-              "Installation and Commissioning": {
-                "Installation and Commissioning": {
-                  "Installation and Commissioning": {
-                    "Installation and Commissioning": {
-                      "Installation and Commissioning": {
-                        "Installation and Commissioning": {
-                          "Installation and Commissioning": {
-                            "Installation and Commissioning": {
-                              "Installation and Commissioning": {
-                                "Installation and Commissioning": {
-                                  "Installation and Commissioning": {
-                                    "Installation and Commissioning": {
-                                      "Installation and Commissioning": {
-                                        "Installation and Commissioning": {
-                                          "Installation and Commissioning": {
-                                            "Installation and Commissioning": {
-                                              "Installation and Commissioning": {}
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "Cleaning and Descaling": {
-          "Cleaning and Descaling": {
-            "Cleaning and Descaling": {
-              "Cleaning and Descaling": {
-                "Cleaning and Descaling": {
-                  "Cleaning and Descaling": {
-                    "Cleaning and Descaling": {
-                      "Cleaning and Descaling": {
-                        "Cleaning and Descaling": {
-                          "Cleaning and Descaling": {
-                            "Cleaning and Descaling": {
-                              "Cleaning and Descaling": {
-                                "Cleaning and Descaling": {
-                                  "Cleaning and Descaling": {
-                                    "Cleaning and Descaling": {
-                                      "Cleaning and Descaling": {
-                                        "Cleaning and Descaling": {
-                                          "Cleaning and Descaling": {
-                                            "Cleaning and Descaling": {
-                                              "Cleaning and Descaling": {}
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "AMC and Preventive Maintenance": {
-          "AMC and Preventive Maintenance": {
-            "AMC and Preventive Maintenance": {
-              "AMC and Preventive Maintenance": {
-                "AMC and Preventive Maintenance": {
-                  "AMC and Preventive Maintenance": {
-                    "AMC and Preventive Maintenance": {
-                      "AMC and Preventive Maintenance": {
-                        "AMC and Preventive Maintenance": {
-                          "AMC and Preventive Maintenance": {
-                            "AMC and Preventive Maintenance": {
-                              "AMC and Preventive Maintenance": {
-                                "AMC and Preventive Maintenance": {
-                                  "AMC and Preventive Maintenance": {
-                                    "AMC and Preventive Maintenance": {
-                                      "AMC and Preventive Maintenance": {
-                                        "AMC and Preventive Maintenance": {
-                                          "AMC and Preventive Maintenance": {
-                                            "AMC and Preventive Maintenance": {
-                                              "AMC and Preventive Maintenance": {}
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "Corrective Repair": {
-          "Corrective Repair": {
-            "Corrective Repair": {
-              "Corrective Repair": {
-                "Corrective Repair": {
-                  "Corrective Repair": {
-                    "Corrective Repair": {
-                      "Corrective Repair": {
-                        "Corrective Repair": {
-                          "Corrective Repair": {
-                            "Corrective Repair": {
-                              "Corrective Repair": {
-                                "Corrective Repair": {
-                                  "Corrective Repair": {
-                                    "Corrective Repair": {
-                                      "Corrective Repair": {
-                                        "Corrective Repair": {
-                                          "Corrective Repair": {
-                                            "Corrective Repair": {
-                                              "Corrective Repair": {}
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "Refurbishment and Performance Upgrades": {
-          "Refurbishment and Performance Upgrades": {
-            "Refurbishment and Performance Upgrades": {
-              "Refurbishment and Performance Upgrades": {
-                "Refurbishment and Performance Upgrades": {
-                  "Refurbishment and Performance Upgrades": {
-                    "Refurbishment and Performance Upgrades": {
-                      "Refurbishment and Performance Upgrades": {
-                        "Refurbishment and Performance Upgrades": {
-                          "Refurbishment and Performance Upgrades": {
-                            "Refurbishment and Performance Upgrades": {
-                              "Refurbishment and Performance Upgrades": {
-                                "Refurbishment and Performance Upgrades": {
-                                  "Refurbishment and Performance Upgrades": {
-                                    "Refurbishment and Performance Upgrades": {
-                                      "Refurbishment and Performance Upgrades": {
-                                        "Refurbishment and Performance Upgrades": {
-                                          "Refurbishment and Performance Upgrades": {
-                                            "Refurbishment and Performance Upgrades": {
-                                              "Refurbishment and Performance Upgrades": {}
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "Others (Water Treatment, Basin Cleaning)": {
-          "Others (Water Treatment, Basin Cleaning)": {
-            "Others (Water Treatment, Basin Cleaning)": {
-              "Others (Water Treatment, Basin Cleaning)": {
-                "Others (Water Treatment, Basin Cleaning)": {
-                  "Others (Water Treatment, Basin Cleaning)": {
-                    "Others (Water Treatment, Basin Cleaning)": {
-                      "Others (Water Treatment, Basin Cleaning)": {
-                        "Others (Water Treatment, Basin Cleaning)": {
-                          "Others (Water Treatment, Basin Cleaning)": {
-                            "Others (Water Treatment, Basin Cleaning)": {
-                              "Others (Water Treatment, Basin Cleaning)": {
-                                "Others (Water Treatment, Basin Cleaning)": {
-                                  "Others (Water Treatment, Basin Cleaning)": {
-                                    "Others (Water Treatment, Basin Cleaning)": {
-                                      "Others (Water Treatment, Basin Cleaning)": {
-                                        "Others (Water Treatment, Basin Cleaning)": {
-                                          "Others (Water Treatment, Basin Cleaning)": {
-                                            "Others (Water Treatment, Basin Cleaning)": {
-                                              "Others (Water Treatment, Basin Cleaning)": {}
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+        "Installation and Commissioning": {},
+        "Cleaning and Descaling": {},
+        "AMC and Preventive Maintenance": {},
+        "Corrective Repair": {},
+        "Refurbishment and Performance Upgrades": {},
+        "Others (Water Treatment, Basin Cleaning)": {}
       }
     },
     "By Industry": {},
-    "By Country": {}
+    "By Type": {
+      "Small Cooling Towers": {},
+      "Medium Cooling Towers": {},
+      "Large Cooling Towers": {}
+    }
   },
   "Rest of Middle East": {
     "By Offering": {
@@ -2355,7 +2159,11 @@
       }
     },
     "By Industry": {},
-    "By Country": {}
+    "By Type": {
+      "Small Cooling Towers": {},
+      "Medium Cooling Towers": {},
+      "Large Cooling Towers": {}
+    }
   },
   "Middle East": {
     "By Offering": {
@@ -2617,6 +2425,10 @@
       }
     },
     "By Industry": {},
-    "By Country": {}
+    "By Type": {
+      "Small Cooling Towers": {},
+      "Medium Cooling Towers": {},
+      "Large Cooling Towers": {}
+    }
   }
 }

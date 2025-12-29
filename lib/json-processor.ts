@@ -33,18 +33,18 @@ function* extractPathsGenerator(
   }
 
   const keys = Object.keys(obj)
-  const hasYearData = keys.some(key => /^\d{4}$/.test(key) || key === 'CAGR')
-  
+  const hasYearData = keys.some(key => /^\d{4}$/.test(key) || key === 'CAGR' || key === '_cagr')
+
   // If this node has year data, yield it (could be a leaf node or an aggregation node)
   if (hasYearData) {
     const yearData: YearData = {}
     keys.forEach(key => {
-      if (/^\d{4}$/.test(key) || key === 'CAGR' || key === '_aggregated' || key === '_level') {
+      if (/^\d{4}$/.test(key) || key === 'CAGR' || key === '_cagr' || key === '_aggregated' || key === '_level') {
         yearData[key] = obj[key]
       }
     })
     yield { path: currentPath, data: yearData }
-    
+
     // IMPORTANT: Don't return here - continue traversing child objects
     // This allows us to extract both aggregation nodes (with year data) AND their child leaf nodes
     // Aggregations have year data at the same level as child objects, so we need to traverse both
@@ -53,7 +53,7 @@ function* extractPathsGenerator(
   // Continue traversing child objects (non-year, non-metadata keys)
   for (const key of keys) {
     // Skip year keys and metadata keys - we've already processed them above
-    if (/^\d{4}$/.test(key) || key === 'CAGR' || key === '_aggregated' || key === '_level') {
+    if (/^\d{4}$/.test(key) || key === 'CAGR' || key === '_cagr' || key === '_aggregated' || key === '_level') {
       continue
     }
     
@@ -81,26 +81,26 @@ function* extractStructurePathsGenerator(
   }
 
   const keys = Object.keys(obj)
-  
+
   // Check if this is a leaf node (empty object or has year data but no child objects)
-  const hasYearData = keys.some(key => /^\d{4}$/.test(key) || key === 'CAGR')
+  const hasYearData = keys.some(key => /^\d{4}$/.test(key) || key === 'CAGR' || key === '_cagr')
   const isEmptyObject = keys.length === 0
-  
+
   // Check if there are any child objects (non-year, non-metadata keys that are objects)
   const hasChildObjects = keys.some(key => {
-    if (/^\d{4}$/.test(key) || key === 'CAGR' || key === '_aggregated' || key === '_level') {
+    if (/^\d{4}$/.test(key) || key === 'CAGR' || key === '_cagr' || key === '_aggregated' || key === '_level') {
       return false
     }
     const value = obj[key]
     return value && typeof value === 'object' && !Array.isArray(value)
   })
-  
+
   // If it's a leaf node (has year data OR is empty) AND has no child objects, yield the path
   if ((hasYearData || isEmptyObject) && !hasChildObjects) {
     yield { path: currentPath }
     return
   }
-  
+
   // If it has year data but also has child objects, yield this path (it's an aggregation node)
   // but continue traversing to get child paths
   if (hasYearData && hasChildObjects) {
@@ -111,7 +111,7 @@ function* extractStructurePathsGenerator(
   // Continue traversing for non-leaf nodes (or nodes with both year data and children)
   for (const key of keys) {
     // Skip year keys and metadata keys - we've already processed them above
-    if (/^\d{4}$/.test(key) || key === 'CAGR' || key === '_aggregated' || key === '_level') {
+    if (/^\d{4}$/.test(key) || key === 'CAGR' || key === '_cagr' || key === '_aggregated' || key === '_level') {
       continue
     }
     
@@ -174,9 +174,9 @@ async function extractYearsAsync(data: RawJsonData): Promise<number[]> {
     // Continue traversing child objects
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i]
-      
+
       // Skip year keys and metadata - we've already processed them
-      if (/^\d{4}$/.test(key) || key === 'CAGR' || key === '_aggregated' || key === '_level') {
+      if (/^\d{4}$/.test(key) || key === 'CAGR' || key === '_cagr' || key === '_aggregated' || key === '_level') {
         continue
       }
       
@@ -406,7 +406,7 @@ function getAllChildrenPaths(
   const keys = Object.keys(current)
   for (const key of keys) {
     // Skip year keys, CAGR, and metadata keys
-    if (/^\d{4}$/.test(key) || key === 'CAGR' || key === '_aggregated' || key === '_level') {
+    if (/^\d{4}$/.test(key) || key === 'CAGR' || key === '_cagr' || key === '_aggregated' || key === '_level') {
       continue
     }
     
@@ -634,11 +634,11 @@ async function processSegmentTypeAsync(
             // If we found the data, extract year values and aggregation metadata
             if (currentValueData && typeof currentValueData === 'object') {
               const keys = Object.keys(currentValueData)
-              const hasYearData = keys.some(key => /^\d{4}$/.test(key) || key === 'CAGR')
+              const hasYearData = keys.some(key => /^\d{4}$/.test(key) || key === 'CAGR' || key === '_cagr')
               if (hasYearData) {
                 data = {}
                 keys.forEach(key => {
-                  if (/^\d{4}$/.test(key) || key === 'CAGR' || key === '_aggregated' || key === '_level') {
+                  if (/^\d{4}$/.test(key) || key === 'CAGR' || key === '_cagr' || key === '_aggregated' || key === '_level') {
                     data![key] = currentValueData[key]
                   }
                 })
@@ -974,14 +974,16 @@ async function processSegmentTypeAsync(
       })
       
       // Parse CAGR - it might be a string like "5.2%" or a number
+      // Check both CAGR (uppercase) and _cagr (underscore prefix)
       let cagr = 0
-      if (data.CAGR !== null && data.CAGR !== undefined) {
-        if (typeof data.CAGR === 'string') {
+      const cagrValue = data.CAGR ?? data._cagr
+      if (cagrValue !== null && cagrValue !== undefined) {
+        if (typeof cagrValue === 'string') {
           // Extract number from string like "5.2%" or "5.2"
-          const cagrStr = data.CAGR.replace('%', '').trim()
+          const cagrStr = cagrValue.replace('%', '').trim()
           cagr = parseFloat(cagrStr) || 0
-        } else if (typeof data.CAGR === 'number') {
-          cagr = data.CAGR
+        } else if (typeof cagrValue === 'number') {
+          cagr = cagrValue
         }
       }
       

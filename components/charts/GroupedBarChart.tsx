@@ -327,6 +327,21 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
     return { data: prepared, series, stackedSeries, isStacked }
   }, [data, filters])
 
+  // Get the selected parent segment name or segment type for the tooltip
+  // IMPORTANT: This must be before any early returns to satisfy React hooks rules
+  const tooltipSegmentLabel = useMemo(() => {
+    const advancedSegments = filters.advancedSegments || []
+    const segmentsFromSameType = advancedSegments.filter(
+      (seg: any) => seg.type === filters.segmentType
+    )
+    // If a specific segment is selected, show that segment name
+    if (segmentsFromSameType.length === 1) {
+      return segmentsFromSameType[0].segment
+    }
+    // Otherwise, show the segment type (e.g., "By Industry", "By Offering")
+    return filters.segmentType
+  }, [filters.advancedSegments, filters.segmentType])
+
   if (!data || chartData.data.length === 0) {
     return (
       <div className="flex items-center justify-center h-96 bg-gray-50 rounded-lg">
@@ -377,12 +392,15 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
     const isINR = selectedCurrency === 'INR'
     const currencySymbol = isINR ? '₹' : '$'
     const unitText = isINR ? '' : (data.metadata.value_unit || 'Million')
-    
+
     const unit = filters.dataType === 'value'
-      ? isINR 
+      ? isINR
         ? currencySymbol
         : `${selectedCurrency} ${unitText}`
       : data.metadata.volume_unit
+
+    // Calculate total of all items for the parent segment
+    const parentTotal = payload.reduce((sum: number, entry: any) => sum + (entry.value || 0), 0)
 
     if (chartData.isStacked) {
       // Use the hoveredBar state to determine which stack to show
@@ -417,9 +435,17 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
 
       return (
         <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg min-w-[250px] max-w-[350px]">
-          <p className="font-semibold text-black mb-2 pb-2 border-b border-gray-200">
-            Year: <span className="text-blue-600">{year}</span>
-          </p>
+          <div className="mb-2 pb-2 border-b border-gray-200">
+            <p className="font-semibold text-black">
+              Year: <span className="text-blue-600">{year}</span>
+            </p>
+            <p className="text-sm text-black mt-1">
+              <span className="font-medium">{tooltipSegmentLabel} Total:</span>{' '}
+              <span className="text-blue-600 font-semibold">
+                {parentTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {unit}
+              </span>
+            </p>
+          </div>
           <div className="mb-2">
             <div className="font-semibold text-black mb-2">{hoveredStackId}</div>
             {items.map((item, idx) => (
@@ -464,9 +490,17 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
     // Non-stacked tooltip (original)
     return (
       <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg min-w-[250px]">
-        <p className="font-semibold text-black mb-3 pb-2 border-b border-gray-200">
-          Year: <span className="text-blue-600">{year}</span>
-        </p>
+        <div className="mb-3 pb-2 border-b border-gray-200">
+          <p className="font-semibold text-black">
+            Year: <span className="text-blue-600">{year}</span>
+          </p>
+          <p className="text-sm text-black mt-1">
+            <span className="font-medium">{tooltipSegmentLabel} Total:</span>{' '}
+            <span className="text-blue-600 font-semibold">
+              {parentTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {unit}
+            </span>
+          </p>
+        </div>
         <div className="space-y-2">
           {payload.map((entry: any, index: number) => (
             <div key={index} className="flex items-center justify-between gap-4">

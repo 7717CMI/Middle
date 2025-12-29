@@ -8,497 +8,928 @@ interface CustomerIntelligenceTablesProps {
   height?: number
 }
 
-// Proposition 1 columns (smallest - 14 columns)
-const proposition1Columns = [
+// Column definitions with proper headers from the Excel file
+const columns = [
   { key: 'sno', header: 'S.No.', group: 'Customer Information', width: 50 },
-  { key: 'customerName', header: 'Customer / Plant / Organization Name', group: 'Customer Information', width: 180 },
-  { key: 'parentGroup', header: 'Parent Group / Holding Company', group: 'Customer Information', width: 160 },
+  { key: 'customerName', header: 'Customer / Plant / Organization Name', group: 'Customer Information', width: 200 },
+  { key: 'parentGroup', header: 'Parent Group / Holding Company', group: 'Customer Information', width: 180 },
   { key: 'country', header: 'Country', group: 'Customer Information', width: 100 },
-  { key: 'city', header: 'City / Industrial Cluster', group: 'Customer Information', width: 140 },
-  { key: 'coreIndustry', header: 'Core Industry (Manufacturing / Oil & Gas / Energy & Power / F&B / Maritime & Offshore / Others)', group: 'Customer Information', width: 200 },
-  { key: 'facilityType', header: 'Facility Type (District Cooling Plants, Power Plants, Industrial Facilities, and Large Commercial Buildings, Refinery, Power Plant, Factory, Desalination, Offshore Platform, Shipyard, etc.)', group: 'Customer Information', width: 200 },
-  { key: 'installedCT', header: 'Installed Cooling Tower Base (no. of towers / cells / capacity )', group: 'Customer Information', width: 180 },
+  { key: 'city', header: 'City / Industrial Cluster', group: 'Customer Information', width: 160 },
+  { key: 'coreIndustry', header: 'Core Industry', group: 'Customer Information', width: 160 },
+  { key: 'facilityType', header: 'Facility Type', group: 'Customer Information', width: 200 },
+  { key: 'installedCT', header: 'Installed Cooling Tower Base', group: 'Customer Information', width: 180 },
   { key: 'keyContact', header: 'Key Contact Person', group: 'Contact Details', width: 140 },
-  { key: 'designation', header: 'Designation / Department', group: 'Contact Details', width: 140 },
-  { key: 'email', header: 'Email Address', group: 'Contact Details', width: 160 },
-  { key: 'phone', header: 'Phone/ WhatsApp Number', group: 'Contact Details', width: 140 },
-  { key: 'linkedin', header: 'LinkedIn Profile', group: 'Contact Details', width: 120 },
+  { key: 'designation', header: 'Designation / Department', group: 'Contact Details', width: 160 },
+  { key: 'email', header: 'Email Address', group: 'Contact Details', width: 180 },
+  { key: 'phone', header: 'Phone / WhatsApp', group: 'Contact Details', width: 140 },
+  { key: 'linkedin', header: 'LinkedIn Profile', group: 'Contact Details', width: 140 },
   { key: 'website', header: 'Website URL', group: 'Contact Details', width: 120 },
+  { key: 'primaryNeedFocus', header: 'Primary Need Focus', group: 'Needs & Pain Points', width: 140 },
+  { key: 'keyProductNeeds', header: 'Key Product Needs', group: 'Needs & Pain Points', width: 200 },
+  { key: 'keyServiceNeeds', header: 'Key Service Needs', group: 'Needs & Pain Points', width: 200 },
+  { key: 'decisionMakers', header: 'Decision Makers', group: 'Purchasing Behaviour', width: 180 },
+  { key: 'currentSupplier', header: 'Current Supplier Setup', group: 'Purchasing Behaviour', width: 180 },
+  { key: 'maintenanceModel', header: 'Maintenance Model', group: 'Purchasing Behaviour', width: 140 },
+  { key: 'buyingModel', header: 'Buying / Contracting Model', group: 'Purchasing Behaviour', width: 180 },
+  { key: 'priorityLevel', header: 'Priority Level', group: 'Opportunity & Project Status', width: 120 },
+  { key: 'opportunitySize', header: 'Opportunity Size', group: 'Opportunity & Project Status', width: 120 },
+  { key: 'plannedProjects', header: 'Planned Projects / Triggers', group: 'Opportunity & Project Status', width: 200 },
+  { key: 'benchmarkingSummary', header: 'Customer Benchmarking Summary', group: 'CMI Insights', width: 200 },
 ]
 
-// Proposition 2 columns (mid-sized - 17 columns)
-const proposition2Columns = [
-  { key: 'sno', header: 'S.No.', group: 'Customer Information', width: 50 },
-  { key: 'customerName', header: 'Customer / Plant / Organization Name', group: 'Customer Information', width: 180 },
-  { key: 'parentGroup', header: 'Parent Group / Holding Company', group: 'Customer Information', width: 160 },
-  { key: 'country', header: 'Country', group: 'Customer Information', width: 100 },
-  { key: 'city', header: 'City / Industrial Cluster', group: 'Customer Information', width: 140 },
-  { key: 'coreIndustry', header: 'Core Industry (Manufacturing / Oil & Gas / Energy & Power / F&B / Maritime & Offshore / Others)', group: 'Customer Information', width: 200 },
-  { key: 'facilityType', header: 'Facility Type (District Cooling Plants, Power Plants, Industrial Facilities, and Large Commercial Buildings, Refinery, Power Plant, Factory, Desalination, Offshore Platform, Shipyard, etc.)', group: 'Customer Information', width: 200 },
-  { key: 'installedCT', header: 'Installed Cooling Tower Base (no. of towers / cells / capacity )', group: 'Customer Information', width: 180 },
-  { key: 'keyContact', header: 'Key Contact Person', group: 'Contact Details', width: 140 },
-  { key: 'designation', header: 'Designation / Department', group: 'Contact Details', width: 140 },
-  { key: 'email', header: 'Email Address', group: 'Contact Details', width: 160 },
-  { key: 'phone', header: 'Phone/WhatsApp Number', group: 'Contact Details', width: 140 },
-  { key: 'linkedin', header: 'LinkedIn Profile', group: 'Contact Details', width: 120 },
-  { key: 'website', header: 'Website URL', group: 'Contact Details', width: 120 },
-  { key: 'priorityLevel', header: 'Priority Level for CT Upgrade / Service (Low / Medium / High)', group: 'Opportunity & Project Status', width: 160 },
-  { key: 'opportunitySize', header: 'Expected Opportunity Size (small / medium / large, or spend range )', group: 'Opportunity & Project Status', width: 160 },
-  { key: 'plannedProjects', header: 'Planned Projects / Triggers (capacity expansion, retrofit, regulatory, efficiency drive)', group: 'Opportunity & Project Status', width: 180 },
-]
-
-// Proposition 3 columns (largest - 26 columns)
-const proposition3Columns = [
-  { key: 'sno', header: 'S.No.', group: 'Customer Information', width: 50 },
-  { key: 'customerName', header: 'Customer / Plant / Organization Name', group: 'Customer Information', width: 180 },
-  { key: 'parentGroup', header: 'Parent Group / Holding Company', group: 'Customer Information', width: 160 },
-  { key: 'country', header: 'Country', group: 'Customer Information', width: 100 },
-  { key: 'city', header: 'City / Industrial Cluster', group: 'Customer Information', width: 140 },
-  { key: 'coreIndustry', header: 'Core Industry (Manufacturing / Oil & Gas / Energy & Power / F&B / Maritime & Offshore / Others)', group: 'Customer Information', width: 200 },
-  { key: 'facilityType', header: 'Facility Type (District Cooling Plants, Power Plants, Industrial Facilities, and Large Commercial Buildings, Refinery, Power Plant, Factory, Desalination, Offshore Platform, Shipyard, etc.)', group: 'Customer Information', width: 200 },
-  { key: 'installedCT', header: 'Installed Cooling Tower Base (no. of towers / cells / capacity )', group: 'Customer Information', width: 180 },
-  { key: 'keyContact', header: 'Key Contact Person', group: 'Contact Details', width: 140 },
-  { key: 'designation', header: 'Designation / Department', group: 'Contact Details', width: 140 },
-  { key: 'email', header: 'Email Address', group: 'Contact Details', width: 160 },
-  { key: 'phone', header: 'Phone/WhatsApp Number', group: 'Contact Details', width: 140 },
-  { key: 'linkedin', header: 'LinkedIn Profile', group: 'Contact Details', width: 120 },
-  { key: 'website', header: 'Website URL', group: 'Contact Details', width: 120 },
-  { key: 'primaryNeedFocus', header: 'Primary Need Focus (Products / Services / Both)', group: 'Needs & Pain Points', width: 160 },
-  { key: 'keyProductNeeds', header: 'Key Product Needs (CT components, maintenance & cleaning equipment)', group: 'Needs & Pain Points', width: 180 },
-  { key: 'keyServiceNeeds', header: 'Key Service Needs (installation, AMC, cleaning, refurbishment, treatment, etc.)', group: 'Needs & Pain Points', width: 180 },
-  { key: 'decisionMakers', header: 'Decision Makers (maintenance manager, utility head, plant manager, procurement, etc.)', group: 'Purchasing Behaviour', width: 180 },
-  { key: 'currentSupplier', header: 'Current Cooling Tower Supplier Setup (OEM / local distributor / multi vendor / in house)', group: 'Purchasing Behaviour', width: 180 },
-  { key: 'maintenanceModel', header: 'Current Maintenance Model (in-house / outsourced / mixed)', group: 'Purchasing Behaviour', width: 160 },
-  { key: 'buyingModel', header: 'Buying / Contracting Model (spot purchase / AMC / long-term service contract / turnkey)', group: 'Purchasing Behaviour', width: 180 },
-  { key: 'priorityLevel', header: 'Priority Level for CT Upgrade / Service (Low / Medium / High)', group: 'Opportunity & Project Status', width: 160 },
-  { key: 'opportunitySize', header: 'Expected Opportunity Size (small / medium / large, or spend range )', group: 'Opportunity & Project Status', width: 160 },
-  { key: 'plannedProjects', header: 'Planned Projects / Triggers (capacity expansion, retrofit, regulatory, efficiency drive)', group: 'Opportunity & Project Status', width: 180 },
-  { key: 'benchmarkingSummary', header: 'Customer Benchmarking Summary (Potential / Customers/ Peer)', group: 'CMI Insights', width: 180 },
-  { key: 'additionalComments', header: 'Additional Comments/ Notes by CMI Team / Group', group: 'CMI Insights', width: 180 },
-]
-
-// Sample data rows with realistic Middle East Cooling Tower market data
-const sampleData = [
+// Customer data from Preposition 3.xlsx
+const customerData = [
   {
     sno: 1,
-    customerName: 'Saudi Aramco - Ras Tanura Refinery',
-    parentGroup: 'Saudi Aramco',
-    country: 'Saudi Arabia',
-    city: 'Ras Tanura',
-    coreIndustry: 'Oil & Gas',
-    facilityType: 'Refinery',
-    installedCT: '12 towers / 48 cells / 85,000 GPM',
-    keyContact: 'Ahmed Al-Rashid',
-    designation: 'Maintenance Manager',
-    email: 'a.alrashid@aramco.com',
-    phone: '+966 13 876 5432',
-    linkedin: 'linkedin.com/in/ahmedalrashid',
-    website: 'www.aramco.com',
-    priorityLevel: 'High',
-    opportunitySize: 'Large ($500K-1M)',
-    plannedProjects: 'Retrofit & efficiency upgrade planned Q2 2025',
-    primaryNeedFocus: 'Both',
-    keyProductNeeds: 'Fill media, drift eliminators, motors & fan assemblies',
-    keyServiceNeeds: 'AMC, cleaning, refurbishment',
-    decisionMakers: 'Plant Manager, Procurement Head',
-    currentSupplier: 'Multi-vendor (SPX, Evapco)',
-    maintenanceModel: 'Mixed',
-    buyingModel: 'Long-term service contract',
-    benchmarkingSummary: 'High Potential - Major expansion planned',
-    additionalComments: 'Key strategic account, strong relationship with procurement team',
+    customerName: "Saudi Aramco Total Refining and Petrochemical Company (SATORP)",
+    parentGroup: "Saudi Aramco",
+    country: "Saudi Arabia",
+    city: "Jubail Industrial City / Jubail II Industrial City",
+    coreIndustry: "Oil & Gas",
+    facilityType: "Refinery / Petrochemical Complex",
+    installedCT: "2–4 large cooling towers; ~8–20 cells",
+    keyContact: "Andrew Davies",
+    designation: "Director, Business Development & Optimization",
+    email: "andrew.davies@satorp.com",
+    phone: "(+966 54 091 6868)",
+    linkedin: "https://www.linkedin.com/in/andrew-davies-b3621832/",
+    website: "http://www.satorp.com",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Fill replacement kits; fan/gearbox spares",
+    keyServiceNeeds: "Shutdown cleaning; refurbishment of cells",
+    decisionMakers: "Utilities/Cooling Water Head; Maintenance Manager; Strategic Procurement",
+    currentSupplier: "Multi-vendor (OEM + specialist CT contractors)",
+    maintenanceModel: "Multi-vendor",
+    buyingModel: "Turnaround-based project + annual framework",
+    priorityLevel: "High",
+    opportunitySize: "Large",
+    plannedProjects: "Turnarounds; reliability/efficiency programs; water conservation",
+    benchmarkingSummary: "Peer set: YASREF; Petro Rabigh; ADNOC refining/petrochem sites"
   },
   {
     sno: 2,
-    customerName: 'ADNOC Refining - Ruwais',
-    parentGroup: 'ADNOC Group',
-    country: 'UAE',
-    city: 'Ruwais Industrial City',
-    coreIndustry: 'Oil & Gas',
-    facilityType: 'Refinery',
-    installedCT: '8 towers / 32 cells / 62,000 GPM',
-    keyContact: 'Mohammed Al-Hashimi',
-    designation: 'Utilities Head',
-    email: 'm.alhashimi@adnoc.ae',
-    phone: '+971 2 602 8000',
-    linkedin: 'linkedin.com/in/malhashimi',
-    website: 'www.adnoc.ae',
-    priorityLevel: 'High',
-    opportunitySize: 'Large ($300K-500K)',
-    plannedProjects: 'Capacity expansion 2025',
-    primaryNeedFocus: 'Products',
-    keyProductNeeds: 'Structural panels, spray nozzles, inlet louvers',
-    keyServiceNeeds: 'Installation, commissioning',
-    decisionMakers: 'Utility Head, Engineering Manager',
-    currentSupplier: 'OEM (Hamon)',
-    maintenanceModel: 'In-house',
-    buyingModel: 'Spot purchase + AMC',
-    benchmarkingSummary: 'High Potential - Budget approved',
-    additionalComments: 'Prefers European suppliers, quality-focused',
+    customerName: "Yanbu Aramco Sinopec Refining Company (YASREF) Ltd.",
+    parentGroup: "Saudi Aramco",
+    country: "Saudi Arabia",
+    city: "Yanbu Industrial City",
+    coreIndustry: "Oil & Gas",
+    facilityType: "Refinery",
+    installedCT: "2–3 large cooling towers; ~10–18 cells total",
+    keyContact: "Ahmed Alruwaithi",
+    designation: "Program Director",
+    email: "ahmed.alruwaithi@yasref.com",
+    phone: "(+966 56 993 8333)",
+    linkedin: "https://www.linkedin.com/in/ahmed-alruwaithi/",
+    website: "yasref.com",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Fill packs; fan/gearbox spares",
+    keyServiceNeeds: "Shutdown cleaning; cell refurbishment",
+    decisionMakers: "Utilities/Water Systems Head; Maintenance Lead; Procurement (MRO/Services)",
+    currentSupplier: "Multi-vendor (OEM + CT service contractor)",
+    maintenanceModel: "Mixed",
+    buyingModel: "Turnaround project + annual rate contract",
+    priorityLevel: "High",
+    opportunitySize: "Large",
+    plannedProjects: "Turnarounds; reliability/efficiency drives; debottlenecking/expansion",
+    benchmarkingSummary: "Peer set: SATORP; Petro Rabigh; ADNOC refining/petrochem sites"
   },
   {
     sno: 3,
-    customerName: 'Qatar Petroleum - Mesaieed Industrial',
-    parentGroup: 'QatarEnergy',
-    country: 'Qatar',
-    city: 'Mesaieed',
-    coreIndustry: 'Oil & Gas',
-    facilityType: 'Petrochemical Complex',
-    installedCT: '6 towers / 24 cells / 45,000 GPM',
-    keyContact: 'Khalid Al-Thani',
-    designation: 'Senior Maintenance Engineer',
-    email: 'k.althani@qp.com.qa',
-    phone: '+974 4013 2000',
-    linkedin: 'linkedin.com/in/khalidthani',
-    website: 'www.qatarenergy.qa',
-    priorityLevel: 'Medium',
-    opportunitySize: 'Medium ($100K-300K)',
-    plannedProjects: 'Regulatory compliance upgrade',
-    primaryNeedFocus: 'Services',
-    keyProductNeeds: 'Drift eliminators, water distribution systems',
-    keyServiceNeeds: 'CT cleaning, water treatment',
-    decisionMakers: 'Maintenance Manager, HSE Head',
-    currentSupplier: 'Local distributor',
-    maintenanceModel: 'Outsourced',
-    buyingModel: 'AMC',
-    benchmarkingSummary: 'Medium Potential - Service-focused',
-    additionalComments: 'Strong focus on environmental compliance',
+    customerName: "Sadara Chemical Company",
+    parentGroup: "Saudi Aramco",
+    country: "Saudi Arabia",
+    city: "Jubail Industrial City II (Jubail)",
+    coreIndustry: "Manufacturing (Petrochemicals)",
+    facilityType: "Industrial Facility (Integrated Chemical Complex)",
+    installedCT: "4–6 large cooling towers; ~20–36 cells total",
+    keyContact: "Albaq Andrian",
+    designation: "Director of Strategic Planning & Business Finance",
+    email: "albaq.andrian@sadara.com",
+    phone: "+966 13 351 3999",
+    linkedin: "https://www.linkedin.com/in/albaqna/",
+    website: "sadara.com",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Fill replacement sets; fan/gearbox spares",
+    keyServiceNeeds: "Planned shutdown cleaning; cell refurbishment",
+    decisionMakers: "Utilities Manager; Mechanical Maintenance Lead; Procurement (MRO/Services)",
+    currentSupplier: "Multi-vendor (OEM spares + specialist CT service contractor)",
+    maintenanceModel: "Mixed",
+    buyingModel: "Annual framework + turnaround project awards",
+    priorityLevel: "High",
+    opportunitySize: "Large",
+    plannedProjects: "Turnarounds; reliability/efficiency improvement; water/corrosion control",
+    benchmarkingSummary: "Peer set: SATORP; YASREF; Petro Rabigh; SABIC Jubail sites"
   },
   {
     sno: 4,
-    customerName: 'Kuwait National Petroleum Company',
-    parentGroup: 'KNPC',
-    country: 'Kuwait',
-    city: 'Mina Al-Ahmadi',
-    coreIndustry: 'Oil & Gas',
-    facilityType: 'Refinery',
-    installedCT: '10 towers / 40 cells / 72,000 GPM',
-    keyContact: 'Fahad Al-Sabah',
-    designation: 'Plant Manager',
-    email: 'f.alsabah@knpc.com',
-    phone: '+965 2326 1000',
-    linkedin: 'linkedin.com/in/fahadsabah',
-    website: 'www.knpc.com',
-    priorityLevel: 'High',
-    opportunitySize: 'Large ($500K+)',
-    plannedProjects: 'Full CT system replacement 2025-2026',
-    primaryNeedFocus: 'Both',
-    keyProductNeeds: 'Complete CT components package',
-    keyServiceNeeds: 'Turnkey installation, AMC',
-    decisionMakers: 'Plant Manager, VP Operations',
-    currentSupplier: 'OEM (Baltimore Aircoil)',
-    maintenanceModel: 'Mixed',
-    buyingModel: 'Turnkey',
-    benchmarkingSummary: 'High Potential - Major project',
-    additionalComments: 'RFQ expected Q1 2025, requires local partner',
+    customerName: "Fertiglobe",
+    parentGroup: "ADNOC",
+    country: "United Arab Emirates",
+    city: "Abu Dhabi / Ruwais Industrial Complex",
+    coreIndustry: "Manufacturing (Fertilizers)",
+    facilityType: "Factory (Ammonia & Urea Fertilizer Plant)",
+    installedCT: "1–2 large cooling towers; ~6–12 cells total",
+    keyContact: "Katherine Duncan",
+    designation: "Business Planning & Reporting Director",
+    email: "katherine.duncan@fertiglobe.com",
+    phone: "+971 2 694 8600",
+    linkedin: "https://www.linkedin.com/in/katherine-duncan-a2b9171b/",
+    website: "fertiglobe.com",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Fill packs; fan/gearbox spares",
+    keyServiceNeeds: "Turnaround cleaning; cell refurbishment",
+    decisionMakers: "Utilities Manager (site); Maintenance Superintendent; Procurement (MRO/Services)",
+    currentSupplier: "Multi-vendor (OEM spares + specialist CT contractor)",
+    maintenanceModel: "Mixed",
+    buyingModel: "Annual framework + turnaround work orders",
+    priorityLevel: "Medium–High",
+    opportunitySize: "Medium–Large",
+    plannedProjects: "Planned turnarounds; reliability/efficiency upgrades; water/corrosion optimization",
+    benchmarkingSummary: "Peer set: QAFCO; QAPCO; Sadara; SABIC industrial sites"
   },
   {
     sno: 5,
-    customerName: 'DUBAL Aluminium Smelter',
-    parentGroup: 'Emirates Global Aluminium',
-    country: 'UAE',
-    city: 'Dubai - Jebel Ali',
-    coreIndustry: 'Manufacturing',
-    facilityType: 'Aluminium Smelter',
-    installedCT: '15 towers / 60 cells / 95,000 GPM',
-    keyContact: 'Rashid Al-Mulla',
-    designation: 'Utilities Manager',
-    email: 'r.almulla@ega.ae',
-    phone: '+971 4 802 4000',
-    linkedin: 'linkedin.com/in/rashidmulla',
-    website: 'www.ega.ae',
-    priorityLevel: 'High',
-    opportunitySize: 'Large ($400K-600K)',
-    plannedProjects: 'Efficiency drive - energy optimization',
-    primaryNeedFocus: 'Products',
-    keyProductNeeds: 'High-efficiency fill media, motors & fan assemblies',
-    keyServiceNeeds: 'Performance audit, optimization',
-    decisionMakers: 'Utilities Manager, Energy Manager',
-    currentSupplier: 'Multi-vendor',
-    maintenanceModel: 'In-house',
-    buyingModel: 'Spot purchase',
-    benchmarkingSummary: 'High Potential - Energy efficiency focus',
-    additionalComments: 'Interested in energy-saving solutions, ROI-driven',
+    customerName: "Tabreed (National Central Cooling Company PJSC)",
+    parentGroup: "Mubadala; ENGIE; public shareholders",
+    country: "United Arab Emirates",
+    city: "Abu Dhabi (Masdar City)",
+    coreIndustry: "Energy & Power (District Cooling)",
+    facilityType: "District Cooling Plants",
+    installedCT: "92 district cooling plants; ~250–450 cells; ~1.3–1.4 million RT",
+    keyContact: "Aley Raza",
+    designation: "Vice President – Internal Audit (A)",
+    email: "araza@tabreed.ae",
+    phone: "+971 50 455 7852",
+    linkedin: "https://www.linkedin.com/in/aley-raza-8915359/",
+    website: "tabreed.ae",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Fill replacement kits; fan/motor/drive spares",
+    keyServiceNeeds: "Pre-summer tower cleaning; cell refurbishment during planned outages",
+    decisionMakers: "Asset/Operations Manager; Maintenance Manager; Procurement (Services/MRO)",
+    currentSupplier: "Multi-vendor (OEM spares + specialist CT contractors)",
+    maintenanceModel: "Mixed",
+    buyingModel: "Multi-year service/AMC frameworks + call-off work orders",
+    priorityLevel: "High",
+    opportunitySize: "Large",
+    plannedProjects: "Plant expansions/new connections; efficiency improvement; water optimization",
+    benchmarkingSummary: "District cooling operators and large mixed-use developments in UAE/KSA/Oman"
   },
   {
     sno: 6,
-    customerName: 'Oman LNG - Qalhat',
-    parentGroup: 'Oman LNG LLC',
-    country: 'Oman',
-    city: 'Qalhat - Sur',
-    coreIndustry: 'Oil & Gas',
-    facilityType: 'LNG Plant',
-    installedCT: '4 towers / 16 cells / 35,000 GPM',
-    keyContact: 'Said Al-Busaidi',
-    designation: 'Technical Services Manager',
-    email: 's.albusaidi@omanlng.co.om',
-    phone: '+968 2554 6000',
-    linkedin: 'linkedin.com/in/saidbusaidi',
-    website: 'www.omanlng.co.om',
-    priorityLevel: 'Medium',
-    opportunitySize: 'Medium ($150K-250K)',
-    plannedProjects: 'Scheduled maintenance overhaul',
-    primaryNeedFocus: 'Both',
-    keyProductNeeds: 'Fill media replacement, spray nozzles',
-    keyServiceNeeds: 'Cleaning, inspection, refurbishment',
-    decisionMakers: 'Technical Services Manager, Procurement',
-    currentSupplier: 'OEM (Marley)',
-    maintenanceModel: 'Outsourced',
-    buyingModel: 'AMC',
-    benchmarkingSummary: 'Medium Potential - Steady business',
-    additionalComments: 'Long-term relationship, prefers proven suppliers',
+    customerName: "Emirates Global Aluminium (EGA)",
+    parentGroup: "Mubadala Investment Company; Investment Corporation of Dubai",
+    country: "United Arab Emirates",
+    city: "Al Taweelah (Abu Dhabi) and Jebel Ali (Dubai)",
+    coreIndustry: "Manufacturing (Metals – Aluminium)",
+    facilityType: "Industrial Facility (Aluminium Smelter Complex)",
+    installedCT: "2–4 large cooling towers; ~12–24 cells total",
+    keyContact: "Youssef Tamaazousti",
+    designation: "Head of Data Science",
+    email: "ytamaazousti@ega.ae",
+    phone: "+33 6 02 05 54 66",
+    linkedin: "https://www.linkedin.com/in/yousseftamaazousti/",
+    website: "ega.ae",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Fill packs; fan-drive spares",
+    keyServiceNeeds: "Planned cell refurbishment; periodic cleaning/descaling",
+    decisionMakers: "Utilities Manager (smelter); Maintenance Manager; Procurement (MRO/services)",
+    currentSupplier: "Multi-vendor",
+    maintenanceModel: "Mixed",
+    buyingModel: "Annual framework + outage work orders",
+    priorityLevel: "High",
+    opportunitySize: "Large",
+    plannedProjects: "Reliability/efficiency upgrades; water optimization; planned outages",
+    benchmarkingSummary: "Heavy industrial utilities users in GCC (petrochem, metals, fertilizers)"
   },
   {
     sno: 7,
-    customerName: 'SABIC - Jubail Industrial Complex',
-    parentGroup: 'Saudi Basic Industries Corp',
-    country: 'Saudi Arabia',
-    city: 'Jubail',
-    coreIndustry: 'Manufacturing',
-    facilityType: 'Petrochemical Plant',
-    installedCT: '18 towers / 72 cells / 120,000 GPM',
-    keyContact: 'Ibrahim Al-Qahtani',
-    designation: 'Reliability Engineer',
-    email: 'i.alqahtani@sabic.com',
-    phone: '+966 13 359 1000',
-    linkedin: 'linkedin.com/in/ibrahimqahtani',
-    website: 'www.sabic.com',
-    priorityLevel: 'High',
-    opportunitySize: 'Large ($600K-800K)',
-    plannedProjects: 'Reliability improvement program',
-    primaryNeedFocus: 'Both',
-    keyProductNeeds: 'All CT components - full replacement',
-    keyServiceNeeds: 'AMC, predictive maintenance',
-    decisionMakers: 'Reliability Engineer, Operations Director',
-    currentSupplier: 'Multi-vendor',
-    maintenanceModel: 'Mixed',
-    buyingModel: 'Long-term service contract',
-    benchmarkingSummary: 'High Potential - Strategic account',
-    additionalComments: 'Vision 2030 aligned, investing heavily in infrastructure',
+    customerName: "QatarEnergy",
+    parentGroup: "Government of Qatar (state-owned)",
+    country: "Qatar",
+    city: "Doha (HQ) / Ras Laffan Industrial City",
+    coreIndustry: "Oil & Gas / Energy & Power",
+    facilityType: "Industrial Facilities (LNG / Gas Processing / Downstream)",
+    installedCT: "2–4 large cooling tower installations; ~12–28 cells total",
+    keyContact: "Muhammad Mudassar",
+    designation: "Strategy & Transformation Advisor",
+    email: "m_mudassar@qp.com.qa",
+    phone: "+971 50 211 3457",
+    linkedin: "https://www.linkedin.com/in/muhammadmudassarshell/",
+    website: "qatarenergy.qa",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "High-salinity drift eliminator upgrade; corrosion-resistant internals; side-stream filtration",
+    keyServiceNeeds: "Cooling-water chemistry optimization; drift & performance audit; scheduled cleaning program",
+    decisionMakers: "Utilities / Cooling Water Systems Manager; Procurement (MRO/Services)",
+    currentSupplier: "Multi-vendor",
+    maintenanceModel: "Mixed",
+    buyingModel: "Long-term service framework + project work orders",
+    priorityLevel: "High",
+    opportunitySize: "Large",
+    plannedProjects: "LNG/gas capacity expansion; reliability/efficiency programs; water optimization",
+    benchmarkingSummary: "Peer set: ORYX GTL; QAFCO; Q-Chem; QAPCO; major GCC NOCs"
   },
   {
     sno: 8,
-    customerName: 'Bahrain Steel Company',
-    parentGroup: 'Bahrain Steel BSC',
-    country: 'Bahrain',
-    city: 'Hidd Industrial Area',
-    coreIndustry: 'Manufacturing',
-    facilityType: 'Steel Mill',
-    installedCT: '5 towers / 20 cells / 38,000 GPM',
-    keyContact: 'Hassan Al-Khalifa',
-    designation: 'Plant Engineering Head',
-    email: 'h.alkhalifa@bahrainsteel.com',
-    phone: '+973 1773 1000',
-    linkedin: 'linkedin.com/in/hassankhalifa',
-    website: 'www.bahrainsteel.com',
-    priorityLevel: 'Medium',
-    opportunitySize: 'Medium ($80K-150K)',
-    plannedProjects: 'Annual maintenance contract renewal',
-    primaryNeedFocus: 'Services',
-    keyProductNeeds: 'Spare parts inventory',
-    keyServiceNeeds: 'Cleaning, routine maintenance',
-    decisionMakers: 'Plant Engineering Head',
-    currentSupplier: 'Local distributor',
-    maintenanceModel: 'Outsourced',
-    buyingModel: 'AMC',
-    benchmarkingSummary: 'Medium Potential - Recurring revenue',
-    additionalComments: 'Cost-conscious, prefers bundled service packages',
+    customerName: "ORYX GTL",
+    parentGroup: "Joint Venture: QatarEnergy + Sasol",
+    country: "Qatar",
+    city: "Ras Laffan Industrial City; Doha (office)",
+    coreIndustry: "Oil & Gas",
+    facilityType: "Industrial Facility (GTL Plant)",
+    installedCT: "1–2 cooling tower units; ~6–12 cells total",
+    keyContact: "Saleh AL-Sulaiti",
+    designation: "Head of Quality",
+    email: "saleh.alsulaiti@oryxgtl.com.qa",
+    phone: "+974 5545 5546",
+    linkedin: "https://www.linkedin.com/in/saleh-al-sulaiti-68064177/",
+    website: "oryxgtl.qa",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Salt-drift control upgrade; corrosion-resistant internals/fasteners",
+    keyServiceNeeds: "Biofouling/scale-focused tower cleaning; performance restoration retrofit",
+    decisionMakers: "Utilities/Cooling Water Superintendent; Maintenance Manager; Procurement & Contracts",
+    currentSupplier: "Multi-vendor",
+    maintenanceModel: "Mixed",
+    buyingModel: "Shutdown-linked project awards + term service framework",
+    priorityLevel: "High",
+    opportunitySize: "Medium–Large",
+    plannedProjects: "Planned shutdowns/turnarounds; reliability and loss-reduction programs",
+    benchmarkingSummary: "Ras Laffan industrial operators (GTL/LNG/gas processing)"
   },
   {
     sno: 9,
-    customerName: 'DEWA - Jebel Ali Power Station',
-    parentGroup: 'Dubai Electricity & Water Authority',
-    country: 'UAE',
-    city: 'Dubai - Jebel Ali',
-    coreIndustry: 'Energy & Power',
-    facilityType: 'Power Plant',
-    installedCT: '20 towers / 80 cells / 150,000 GPM',
-    keyContact: 'Omar Al-Shamsi',
-    designation: 'Mechanical Maintenance Manager',
-    email: 'o.alshamsi@dewa.gov.ae',
-    phone: '+971 4 601 9999',
-    linkedin: 'linkedin.com/in/omarshamsi',
-    website: 'www.dewa.gov.ae',
-    priorityLevel: 'High',
-    opportunitySize: 'Large ($700K-1M)',
-    plannedProjects: 'Sustainability upgrade - water conservation',
-    primaryNeedFocus: 'Both',
-    keyProductNeeds: 'High-efficiency drift eliminators, fill media',
-    keyServiceNeeds: 'Water treatment, performance optimization',
-    decisionMakers: 'Division Head, Sustainability Director',
-    currentSupplier: 'OEM (SPX Cooling)',
-    maintenanceModel: 'In-house',
-    buyingModel: 'Spot purchase + service contract',
-    benchmarkingSummary: 'High Potential - Government priority',
-    additionalComments: 'Strong sustainability mandate, green procurement policy',
+    customerName: "QAFCO (Qatar Fertiliser Company)",
+    parentGroup: "Industries Qatar (IQ)",
+    country: "Qatar",
+    city: "Mesaieed Industrial City",
+    coreIndustry: "Manufacturing (Fertilizers)",
+    facilityType: "Factory (Ammonia & Urea Fertilizer Complex)",
+    installedCT: "3–5 cooling tower units; ~18–30 cells total",
+    keyContact: "Ahmad Esmael Rahimi",
+    designation: "Chief Operations Officer",
+    email: "arahimi@qafco.com.qa",
+    phone: "+974 4422 7777",
+    linkedin: "https://www.linkedin.com/in/ahmed-esmael-rahimi-73651b78/",
+    website: "qafco.qa",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "High-efficiency fill upgrade; ammonia-leak tolerant drift control; side-stream filtration",
+    keyServiceNeeds: "Cooling-water chemistry program; planned turnaround cell overhaul; performance testing",
+    decisionMakers: "Utility Plant Head; Maintenance Manager; Contracts & Procurement (MRO/Services)",
+    currentSupplier: "Multi-vendor (OEM spares + specialist CT contractors)",
+    maintenanceModel: "Mixed",
+    buyingModel: "Multi-year framework + turnaround work orders",
+    priorityLevel: "High",
+    opportunitySize: "Large",
+    plannedProjects: "QAFCO-7 / low-carbon ammonia; periodic turnarounds; efficiency and water-loss reduction",
+    benchmarkingSummary: "Fertiglobe (Ruwais); SABIC fertilizer/chem sites; QAPCO/Q-Chem"
   },
   {
     sno: 10,
-    customerName: 'Ma\'aden Aluminium - Ras Al Khair',
-    parentGroup: 'Saudi Arabian Mining Company',
-    country: 'Saudi Arabia',
-    city: 'Ras Al Khair',
-    coreIndustry: 'Manufacturing',
-    facilityType: 'Aluminium Smelter',
-    installedCT: '14 towers / 56 cells / 88,000 GPM',
-    keyContact: 'Abdulaziz Al-Dosari',
-    designation: 'Utilities Superintendent',
-    email: 'a.aldosari@maaden.com.sa',
-    phone: '+966 13 821 0000',
-    linkedin: 'linkedin.com/in/abdulazizaldosari',
-    website: 'www.maaden.com.sa',
-    priorityLevel: 'High',
-    opportunitySize: 'Large ($450K-650K)',
-    plannedProjects: 'Capacity expansion Phase 2',
-    primaryNeedFocus: 'Products',
-    keyProductNeeds: 'New CT installation components',
-    keyServiceNeeds: 'Installation, commissioning, training',
-    decisionMakers: 'Utilities Superintendent, Project Manager',
-    currentSupplier: 'OEM (Evapco)',
-    maintenanceModel: 'In-house',
-    buyingModel: 'Turnkey',
-    benchmarkingSummary: 'High Potential - Expansion project',
-    additionalComments: 'Greenfield project, budget allocated',
+    customerName: "Petro Rabigh (Rabigh Refining & Petrochemical Company)",
+    parentGroup: "Saudi Aramco; Sumitomo Chemical; public shareholders",
+    country: "Saudi Arabia",
+    city: "Rabigh (West Coast industrial corridor)",
+    coreIndustry: "Oil & Gas",
+    facilityType: "Refinery / Petrochemical Complex",
+    installedCT: "2–3 large cooling towers; ~10–18 cells total",
+    keyContact: "Mazen Dennah",
+    designation: "Acting Head of Section",
+    email: "mazen.dennah@petrorabigh.com",
+    phone: "+966 55 555 0900",
+    linkedin: "https://www.linkedin.com/in/mazen-dennah-94b82041/",
+    website: "petrorabigh.com",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Drift eliminator upgrade; corrosion-resistant internals (coastal environment)",
+    keyServiceNeeds: "Turnaround cell refurbishment; cooling-water chemistry optimization",
+    decisionMakers: "Utilities/Cooling Water Head; Maintenance Manager; Procurement/Contracts",
+    currentSupplier: "Multi-vendor",
+    maintenanceModel: "Mixed",
+    buyingModel: "Turnaround project awards + term service framework",
+    priorityLevel: "High",
+    opportunitySize: "Large",
+    plannedProjects: "Planned turnarounds; reliability/efficiency upgrades; salt-drift loss reduction",
+    benchmarkingSummary: "Peer set: SATORP; YASREF; other KSA integrated refinery-petrochem sites"
   },
   {
     sno: 11,
-    customerName: 'Emirates Steel Industries',
-    parentGroup: 'Emirates Steel Arkan',
-    country: 'UAE',
-    city: 'Abu Dhabi - Mussafah',
-    coreIndustry: 'Manufacturing',
-    facilityType: 'Steel Mill',
-    installedCT: '7 towers / 28 cells / 52,000 GPM',
-    keyContact: 'Youssef Al-Nuaimi',
-    designation: 'Maintenance Director',
-    email: 'y.alnuaimi@emiratessteel.com',
-    phone: '+971 2 509 7000',
-    linkedin: 'linkedin.com/in/youssefnuaimi',
-    website: 'www.emiratessteel.com',
-    priorityLevel: 'Medium',
-    opportunitySize: 'Medium ($200K-350K)',
-    plannedProjects: 'Retrofit for water efficiency',
-    primaryNeedFocus: 'Both',
-    keyProductNeeds: 'Water distribution systems, nozzles',
-    keyServiceNeeds: 'Water audit, treatment services',
-    decisionMakers: 'Maintenance Director, Environmental Manager',
-    currentSupplier: 'Multi-vendor',
-    maintenanceModel: 'Mixed',
-    buyingModel: 'AMC',
-    benchmarkingSummary: 'Medium Potential - Water conservation focus',
-    additionalComments: 'Strong environmental compliance requirements',
+    customerName: "SABIC (Petrokemya site – Jubail)",
+    parentGroup: "Saudi Aramco (70% owner)",
+    country: "Saudi Arabia",
+    city: "Jubail Industrial City",
+    coreIndustry: "Manufacturing (Petrochemicals)",
+    facilityType: "Industrial Facility (Petrochemical Complex)",
+    installedCT: "3–5 large cooling towers; ~18–30 cells total",
+    keyContact: "Abdullah AlDamer",
+    designation: "Director of Strategic Partnership & Performance Management",
+    email: "aldamera@petrokemya.sabic.com",
+    phone: "+966 59 244 0136",
+    linkedin: "https://www.linkedin.com/in/abdullah-aldamer-62b23452/",
+    website: "sabic.com",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Drift eliminator retrofit; corrosion-resistant hardware/internals",
+    keyServiceNeeds: "Turnaround cell overhaul; cooling-water treatment optimization",
+    decisionMakers: "Site Utilities Manager; Maintenance Manager; Procurement/Contracts (MRO & Services)",
+    currentSupplier: "Multi-vendor (approved OEM + specialist CT contractors)",
+    maintenanceModel: "Mixed",
+    buyingModel: "Frame agreement for routine scope + turnaround project awards",
+    priorityLevel: "High",
+    opportunitySize: "Large",
+    plannedProjects: "Planned turnarounds; utility reliability/efficiency programs; water-loss reduction",
+    benchmarkingSummary: "Sadara (Jubail); SATORP (Jubail); YASREF (Yanbu); Petro Rabigh (Rabigh)"
   },
   {
     sno: 12,
-    customerName: 'Qatar Aluminium (Qatalum)',
-    parentGroup: 'Qatar Aluminium Ltd',
-    country: 'Qatar',
-    city: 'Mesaieed Industrial',
-    coreIndustry: 'Manufacturing',
-    facilityType: 'Aluminium Smelter',
-    installedCT: '12 towers / 48 cells / 82,000 GPM',
-    keyContact: 'Nasser Al-Attiyah',
-    designation: 'Technical Manager',
-    email: 'n.alattiyah@qatalum.com',
-    phone: '+974 4422 8000',
-    linkedin: 'linkedin.com/in/nasserattiyah',
-    website: 'www.qatalum.com',
-    priorityLevel: 'Medium',
-    opportunitySize: 'Medium ($180K-280K)',
-    plannedProjects: 'Scheduled turnaround maintenance',
-    primaryNeedFocus: 'Products',
-    keyProductNeeds: 'Fill media, structural components',
-    keyServiceNeeds: 'Inspection, refurbishment',
-    decisionMakers: 'Technical Manager, Procurement Manager',
-    currentSupplier: 'OEM (Hamon)',
-    maintenanceModel: 'In-house',
-    buyingModel: 'Spot purchase',
-    benchmarkingSummary: 'Medium Potential - Regular maintenance cycle',
-    additionalComments: 'Prefers OEM parts, quality over cost',
+    customerName: "Chemanol (Methanol Chemicals Company)",
+    parentGroup: "Public company",
+    country: "Saudi Arabia",
+    city: "Al Jubail Industrial City (Jubail)",
+    coreIndustry: "Manufacturing (Chemicals / Methanol derivatives)",
+    facilityType: "Factory / Chemical Plant",
+    installedCT: "1–2 cooling towers; ~6–12 cells total",
+    keyContact: "Syed Sohaib Ahsan",
+    designation: "Chief Financial Officer",
+    email: "syed@chemanol.com",
+    phone: "+966 56 995 4555",
+    linkedin: "https://www.linkedin.com/in/syed-sohaib-ahsan-13332724/",
+    website: "chemanol.com",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Chemical-resistant fill/internals; fan/motor efficiency upgrade (VFD-ready)",
+    keyServiceNeeds: "Scale/corrosion control program tuning; planned outage cell refurbishment",
+    decisionMakers: "Utilities/Offsites Manager; Maintenance Manager; Procurement (MRO/Services)",
+    currentSupplier: "Multi-vendor",
+    maintenanceModel: "Mixed",
+    buyingModel: "Annual service framework + shutdown work orders",
+    priorityLevel: "Medium–High",
+    opportunitySize: "Medium",
+    plannedProjects: "Summer performance shortfalls; water conservation; reliability/energy optimization",
+    benchmarkingSummary: "Jubail chemical/petrochemical plants (SABIC/Sadara ecosystem)"
   },
   {
     sno: 13,
-    customerName: 'Sohar Aluminium',
-    parentGroup: 'Sohar Aluminium LLC',
-    country: 'Oman',
-    city: 'Sohar Industrial Port',
-    coreIndustry: 'Manufacturing',
-    facilityType: 'Aluminium Smelter',
-    installedCT: '9 towers / 36 cells / 65,000 GPM',
-    keyContact: 'Salim Al-Rawahi',
-    designation: 'Operations Manager',
-    email: 's.alrawahi@soharaluminium.com',
-    phone: '+968 2685 0000',
-    linkedin: 'linkedin.com/in/salimrawahi',
-    website: 'www.soharaluminium.com',
-    priorityLevel: 'Medium',
-    opportunitySize: 'Medium ($120K-200K)',
-    plannedProjects: 'Energy efficiency improvement',
-    primaryNeedFocus: 'Products',
-    keyProductNeeds: 'High-efficiency motors, fan assemblies',
-    keyServiceNeeds: 'Performance assessment',
-    decisionMakers: 'Operations Manager, Energy Manager',
-    currentSupplier: 'Local distributor',
-    maintenanceModel: 'Mixed',
-    buyingModel: 'Spot purchase',
-    benchmarkingSummary: 'Medium Potential - Efficiency focus',
-    additionalComments: 'Energy cost reduction is key driver',
+    customerName: "ALujain Corporation (NATPET polypropylene complex)",
+    parentGroup: "Public Saudi joint-stock company (listed)",
+    country: "Saudi Arabia",
+    city: "Riyadh (HQ) / Yanbu Industrial City",
+    coreIndustry: "Manufacturing (Petrochemicals)",
+    facilityType: "Petrochemical Plant (Propylene / Polypropylene)",
+    installedCT: "1–2 cooling towers; ~6–10 cells total",
+    keyContact: "Saleem Akhtar",
+    designation: "Vice President",
+    email: "saleem@alujain.sa",
+    phone: "+966 56 849 7252",
+    linkedin: "https://www.linkedin.com/in/saleem-akhtar-76947aa/",
+    website: "alujain.sa",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Fan energy optimization retrofit (VFD-ready); side-stream filtration",
+    keyServiceNeeds: "Cooling-water performance audit; planned outage cell refurbishment/repairs",
+    decisionMakers: "Plant Utilities/Offsites Manager (Yanbu); Procurement/Contracts",
+    currentSupplier: "Multi-vendor (OEM + local specialist contractors)",
+    maintenanceModel: "Mixed",
+    buyingModel: "Annual service framework + shutdown work orders",
+    priorityLevel: "Medium–High",
+    opportunitySize: "Medium",
+    plannedProjects: "Summer peak performance; energy-efficiency drive; reliability improvement",
+    benchmarkingSummary: "Yanbu/Jubail petrochemical operators (YASREF, SABIC affiliates)"
   },
   {
     sno: 14,
-    customerName: 'TAQA - Jebel Ali Power',
-    parentGroup: 'Abu Dhabi National Energy Co',
-    country: 'UAE',
-    city: 'Abu Dhabi',
-    coreIndustry: 'Energy & Power',
-    facilityType: 'Power & Desalination Plant',
-    installedCT: '16 towers / 64 cells / 110,000 GPM',
-    keyContact: 'Khaled Al-Muhairi',
-    designation: 'Asset Manager',
-    email: 'k.almuhairi@taqa.com',
-    phone: '+971 2 691 4000',
-    linkedin: 'linkedin.com/in/khaledmuhairi',
-    website: 'www.taqa.com',
-    priorityLevel: 'High',
-    opportunitySize: 'Large ($350K-500K)',
-    plannedProjects: 'Asset life extension program',
-    primaryNeedFocus: 'Both',
-    keyProductNeeds: 'Structural panels, basins, grating',
-    keyServiceNeeds: 'Condition assessment, refurbishment',
-    decisionMakers: 'Asset Manager, VP Operations',
-    currentSupplier: 'OEM (Marley)',
-    maintenanceModel: 'Outsourced',
-    buyingModel: 'Long-term service contract',
-    benchmarkingSummary: 'High Potential - Life extension project',
-    additionalComments: 'Looking for strategic maintenance partner',
+    customerName: "QAPCO (Qatar Petrochemical Company)",
+    parentGroup: "Industries Qatar",
+    country: "Qatar",
+    city: "Mesaieed Industrial City",
+    coreIndustry: "Manufacturing (Petrochemicals)",
+    facilityType: "Petrochemical Complex (Ethylene / Polyethylene)",
+    installedCT: "2–4 cooling towers; ~12–24 cells total",
+    keyContact: "Nasser Emara",
+    designation: "Head of Engineering",
+    email: "nemara@qapco.com.qa",
+    phone: "+974 5556 9509",
+    linkedin: "https://www.linkedin.com/in/nasser-emara-3aa61826/",
+    website: "qapco.com",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Drift-loss control upgrade; side-stream filtration (dust/silt fouling)",
+    keyServiceNeeds: "Cooling-water chemistry optimization; turnaround cell overhaul",
+    decisionMakers: "Utilities/Offsites Manager; Procurement & Contracts (MRO/Services)",
+    currentSupplier: "Multi-vendor",
+    maintenanceModel: "Mixed",
+    buyingModel: "Term framework + turnaround work orders",
+    priorityLevel: "High",
+    opportunitySize: "Large",
+    plannedProjects: "Summer performance recovery; water-loss reduction; reliability/efficiency",
+    benchmarkingSummary: "Mesaieed industrial operators (Q-Chem, QAFCO)"
   },
   {
     sno: 15,
-    customerName: 'Borouge - Ruwais Complex',
-    parentGroup: 'Borouge PLC',
-    country: 'UAE',
-    city: 'Ruwais',
-    coreIndustry: 'Manufacturing',
-    facilityType: 'Petrochemical Plant',
-    installedCT: '11 towers / 44 cells / 78,000 GPM',
-    keyContact: 'Ahmad Al-Kaabi',
-    designation: 'Maintenance Planning Manager',
-    email: 'a.alkaabi@borouge.com',
-    phone: '+971 2 607 0000',
-    linkedin: 'linkedin.com/in/ahmadkaabi',
-    website: 'www.borouge.com',
-    priorityLevel: 'High',
-    opportunitySize: 'Large ($400K-550K)',
-    plannedProjects: 'Borouge 4 expansion - new CT required',
-    primaryNeedFocus: 'Both',
-    keyProductNeeds: 'Complete CT system for new capacity',
-    keyServiceNeeds: 'Design, installation, commissioning',
-    decisionMakers: 'Project Director, Procurement Director',
-    currentSupplier: 'OEM (SPX)',
-    maintenanceModel: 'In-house',
-    buyingModel: 'Turnkey',
-    benchmarkingSummary: 'High Potential - Major expansion',
-    additionalComments: 'Multi-billion dollar expansion, CT scope significant',
+    customerName: "Qatar Chemical Company (Q-Chem)",
+    parentGroup: "Mesaieed Petrochemical Holding; Chevron Phillips Chemical; QatarEnergy",
+    country: "Qatar",
+    city: "Mesaieed Industrial City / Doha (office)",
+    coreIndustry: "Manufacturing (Petrochemicals)",
+    facilityType: "Industrial Facility (polyethylene + 1-hexene/alpha olefins)",
+    installedCT: "2–4 cooling tower units; ~12–24 cells total",
+    keyContact: "Lou Compton",
+    designation: "Deputy Chief Executive Officer",
+    email: "lcompton@qchem.com.qa",
+    phone: "+1 713-376-0058",
+    linkedin: "https://www.linkedin.com/in/loucompton/",
+    website: "qchem.com.qa",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "High-efficiency drift eliminators; corrosion-resistant internals/fasteners",
+    keyServiceNeeds: "Drift/performance audit with retrofit; water-treatment optimization",
+    decisionMakers: "Utilities/Offsites Manager; Procurement/Contracts (MRO & Services)",
+    currentSupplier: "Multi-vendor",
+    maintenanceModel: "Mixed",
+    buyingModel: "Term service framework + turnaround work orders",
+    priorityLevel: "High",
+    opportunitySize: "Large",
+    plannedProjects: "Planned shutdowns/turnarounds; drift-loss reduction; summer performance",
+    benchmarkingSummary: "Mesaieed industrial operators (QAPCO, QAFCO)"
   },
+  {
+    sno: 16,
+    customerName: "North Oil Company (NOC) Qatar",
+    parentGroup: "Joint Venture: QatarEnergy + TotalEnergies",
+    country: "Qatar",
+    city: "Doha (HQ) / Offshore North Field area",
+    coreIndustry: "Oil & Gas",
+    facilityType: "Offshore Platform / Offshore Oil Field Operations",
+    installedCT: "1–2 small HVAC cooling towers at onshore offices/support base",
+    keyContact: "Bakhyt Zupinov",
+    designation: "Head of Geological Operations",
+    email: "bakhyt.zupinov@noc.qa",
+    phone: "+974 5039 8037",
+    linkedin: "https://www.linkedin.com/in/bakhyt-zupinov-a3768044/",
+    website: "noc.qa",
+    primaryNeedFocus: "Services (dominant)",
+    keyProductNeeds: "Onshore office/support base HVAC CT spares; closed-loop cooler cleaning tools",
+    keyServiceNeeds: "Onshore HVAC cooling system water treatment + Legionella control",
+    decisionMakers: "Facilities/Utilities Lead (shore base) + Procurement/Contracts",
+    currentSupplier: "Local HVAC/MEP contractor + multi-vendor spares",
+    maintenanceModel: "Outsourced (specialist facilities contractor)",
+    buyingModel: "Annual facilities AMC + call-off for corrective works",
+    priorityLevel: "Low–Medium",
+    opportunitySize: "Small",
+    plannedProjects: "Office/shore-base expansion; compliance-driven water hygiene",
+    benchmarkingSummary: "Offshore operators with shore bases in Qatar/UAE"
+  },
+  {
+    sno: 17,
+    customerName: "Dolphin Energy",
+    parentGroup: "Mubadala Investment Company; TotalEnergies; Occidental Petroleum",
+    country: "United Arab Emirates",
+    city: "Abu Dhabi (HQ); Ras Laffan (Qatar); Taweelah (Abu Dhabi)",
+    coreIndustry: "Oil & Gas / Energy & Power",
+    facilityType: "Gas Processing & Compression Plant + Receiving Facilities",
+    installedCT: "~4–8 cells at Ras Laffan + ~2–4 cells at receiving; total ~4–12 cells",
+    keyContact: "Anthony Pinto",
+    designation: "Head of Budgeting and Reporting",
+    email: "anthony.pinto@dolphinenergy.com",
+    phone: "+974 5519 6083",
+    linkedin: "https://www.linkedin.com/in/anthony-pinto-47882947/",
+    website: "dolphinenergy.com",
+    primaryNeedFocus: "Services (dominant) + critical spares",
+    keyProductNeeds: "Critical rotating spares for CT fans; corrosion-resistant drift eliminators",
+    keyServiceNeeds: "Summer readiness performance test; cooling-water treatment program",
+    decisionMakers: "Plant Utilities/Offsites Manager; Maintenance Lead; Procurement & Contracts",
+    currentSupplier: "Multi-vendor (OEM spares + specialist service contractor)",
+    maintenanceModel: "Mixed",
+    buyingModel: "Term service framework + call-off work orders",
+    priorityLevel: "Medium–High",
+    opportunitySize: "Medium–Large",
+    plannedProjects: "Reliability-driven cooling upgrades; corrosion/scale mitigation",
+    benchmarkingSummary: "Ras Laffan/Mesaieed gas & petrochem operators"
+  },
+  {
+    sno: 18,
+    customerName: "ADNOC Group (Abu Dhabi National Oil Company)",
+    parentGroup: "Abu Dhabi Government (state-owned)",
+    country: "United Arab Emirates",
+    city: "Abu Dhabi (HQ) / Ruwais Industrial Complex",
+    coreIndustry: "Oil & Gas / Energy & Power",
+    facilityType: "Refinery + Gas Processing + General Utilities Plants",
+    installedCT: "8–15 installations across sites; ~60–120 cells total",
+    keyContact: "Nasser Albusaeedi",
+    designation: "Senior Vice President Operations",
+    email: "nalbusaeedi@adnoc.ae",
+    phone: "+971 50 731 6676",
+    linkedin: "https://www.linkedin.com/in/nalbusaeedi/",
+    website: "adnoc.ae",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "High-drift-efficiency eliminators; corrosion-resistant internals; filtration add-on",
+    keyServiceNeeds: "Coastal cooling-water chemistry optimization; turnaround refurbishment; summer readiness testing",
+    decisionMakers: "Ruwais Utilities Manager; Site Maintenance Manager; ADNOC Procurement/Contracts",
+    currentSupplier: "Multi-vendor (approved OEMs + qualified service contractors)",
+    maintenanceModel: "Mixed",
+    buyingModel: "Long-term framework agreements + call-off; turnkey for major revamps",
+    priorityLevel: "High",
+    opportunitySize: "Large",
+    plannedProjects: "Reliability/efficiency upgrades at Ruwais; expansion-driven utility loads; water-loss reduction",
+    benchmarkingSummary: "Large GCC NOCs (QatarEnergy, Aramco JVs, ENOC, OQ)"
+  },
+  {
+    sno: 19,
+    customerName: "ENOC (Emirates National Oil Company)",
+    parentGroup: "Government of Dubai (wholly owned)",
+    country: "United Arab Emirates",
+    city: "Dubai (Jebel Ali industrial corridor)",
+    coreIndustry: "Oil & Gas",
+    facilityType: "Refinery + Terminals (downstream assets; Jebel Ali)",
+    installedCT: "1 main refinery installation; ~6–12 cells total",
+    keyContact: "Rania Nazmy",
+    designation: "Head – Retail Marketing and Communications",
+    email: "rania.nazmy@enoc.com",
+    phone: "+971 55 244 9240",
+    linkedin: "https://www.linkedin.com/in/rania-nazmy-7a32b934/",
+    website: "enoc.com",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Fan energy-optimization retrofit (VFD/drive upgrade); high-efficiency drift eliminators",
+    keyServiceNeeds: "Energy-efficiency audit; planned cell refurbishment during shutdown",
+    decisionMakers: "Refinery Utilities/Offsites Manager; Refinery Procurement/Contracts",
+    currentSupplier: "Multi-vendor (approved OEM spares + specialist CT contractors)",
+    maintenanceModel: "Mixed",
+    buyingModel: "Framework contract + shutdown work orders",
+    priorityLevel: "Medium–High",
+    opportunitySize: "Medium–Large",
+    plannedProjects: "Summer peak performance; energy-efficiency programs; shutdown-driven refurbishment",
+    benchmarkingSummary: "Downstream operators with coastal refineries/terminals in UAE/KSA"
+  },
+  {
+    sno: 20,
+    customerName: "Jordan Petroleum Refinery Company Ltd. (JPRC)",
+    parentGroup: "Public shareholding company",
+    country: "Jordan",
+    city: "Zarqa / Al-Hashimiyah (Refinery area)",
+    coreIndustry: "Oil & Gas",
+    facilityType: "Refinery",
+    installedCT: "1–2 cooling towers; ~6–12 cells total",
+    keyContact: "Hashim Rababah",
+    designation: "Section Head",
+    email: "hashim.rababah@jopetrol.com.jo",
+    phone: "+962 7 7741 2216",
+    linkedin: "https://www.linkedin.com/in/hashim-rababah-132b74128/",
+    website: "jopetrol.com.jo",
+    primaryNeedFocus: "Services (dominant)",
+    keyProductNeeds: "Side-stream filtration; scale-resistant fill/internals; drift eliminators",
+    keyServiceNeeds: "Water-treatment program optimization; pre-summer performance restoration; mechanical refurbishment",
+    decisionMakers: "Refinery Utilities/Offsites Head; Maintenance Manager; Procurement/Contracts",
+    currentSupplier: "Multi-vendor (local contractors + OEM spares)",
+    maintenanceModel: "Mixed",
+    buyingModel: "Annual framework/AMC + shutdown work orders",
+    priorityLevel: "Medium–High",
+    opportunitySize: "Medium",
+    plannedProjects: "Refinery upgrade/expansion programs; water conservation; summer reliability",
+    benchmarkingSummary: "Regional single-refinery operators in Levant/North Africa"
+  },
+  {
+    sno: 21,
+    customerName: "Khalda Petroleum Company (Apache)",
+    parentGroup: "Joint Venture: Apache Corporation + EGPC",
+    country: "Egypt",
+    city: "Western Desert oil & gas area; Cairo (admin)",
+    coreIndustry: "Oil & Gas",
+    facilityType: "Onshore Oil & Gas Production Facilities",
+    installedCT: "1 process cooling-tower system; ~2–6 cells total",
+    keyContact: "Ezzat Emam",
+    designation: "Head of Energy Efficiency Department",
+    email: "ezzat.emam@khalda-eg.com",
+    phone: "+20 122 581 7455",
+    linkedin: "https://www.linkedin.com/in/ezzat-emam-cem-cfp-verifier-cmrp-25a46352/",
+    website: "khalda-eg.com",
+    primaryNeedFocus: "Services (dominant)",
+    keyProductNeeds: "Sand/dust protection accessories; side-stream filtration; scale-resistant fill/internals",
+    keyServiceNeeds: "Water-treatment program for scale/corrosion; periodic cleaning/desludging",
+    decisionMakers: "Utilities/Facilities Manager (CPF); Maintenance Manager; Procurement/Contracts",
+    currentSupplier: "Multi-vendor (local contractors + OEM spares as needed)",
+    maintenanceModel: "Mixed",
+    buyingModel: "Annual service/chemical supply framework + call-off work orders",
+    priorityLevel: "Medium",
+    opportunitySize: "Small–Medium",
+    plannedProjects: "Production facility debottlenecking; energy-efficiency initiatives; water constraints",
+    benchmarkingSummary: "Egypt onshore operators with desert conditions"
+  },
+  {
+    sno: 22,
+    customerName: "OQ",
+    parentGroup: "Government of Oman (via Oman Investment Authority)",
+    country: "Oman",
+    city: "Muscat (HQ) / Sohar Industrial Port Area",
+    coreIndustry: "Oil & Gas / Energy & Power",
+    facilityType: "Refinery + Petrochem / Industrial Complex",
+    installedCT: "3–6 installations across refinery/petrochem; ~18–45 cells total",
+    keyContact: "Mark Adams",
+    designation: "Head of Asset Planning and Optimization",
+    email: "mark.adams@oq.com",
+    phone: "+1 210-275-0850",
+    linkedin: "https://www.linkedin.com/in/mark-adams-56473220/",
+    website: "oq.com",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Water-loss reduction package; fan energy retrofit (VFD-ready drives)",
+    keyServiceNeeds: "Cooling tower performance test + optimization plan; turnaround refurbishment",
+    decisionMakers: "Refinery/Complex Utilities Head; Asset Planning & Optimization; Procurement/Contracts",
+    currentSupplier: "Multi-vendor (approved OEM spares + specialist contractors)",
+    maintenanceModel: "Mixed",
+    buyingModel: "Frame agreement + turnaround project work orders",
+    priorityLevel: "High",
+    opportunitySize: "Large",
+    plannedProjects: "Post-expansion stabilization; energy-efficiency programs; water conservation",
+    benchmarkingSummary: "ADNOC refining assets; ENOC refinery; Saudi Aramco JV refineries"
+  },
+  {
+    sno: 23,
+    customerName: "Petroleum Development Oman (PDO)",
+    parentGroup: "Government of Oman; Shell; TotalEnergies; Partex",
+    country: "Oman",
+    city: "Muscat (HQ) + Interior oilfield operations",
+    coreIndustry: "Oil & Gas",
+    facilityType: "Onshore Oil & Gas Production Facilities, Gas Processing",
+    installedCT: "5–12 cooling-tower systems; ~25–70 cells total",
+    keyContact: "General Contact",
+    designation: "Corporate Office (route to Facilities/Utilities & Procurement)",
+    email: "info@pdo.co.om",
+    phone: "+968 2467 8111",
+    linkedin: "https://www.linkedin.com/company/petroleum-development-oman/",
+    website: "pdo.co.om",
+    primaryNeedFocus: "Both (services-led across multiple sites)",
+    keyProductNeeds: "Sand/dust protection + side-stream filtration (high suspended solids)",
+    keyServiceNeeds: "Desert fouling control program; water-treatment optimization for scale/corrosion",
+    decisionMakers: "Asset/Operations Manager + Utilities/Facilities Lead + Procurement/Contracts",
+    currentSupplier: "Multi-vendor (approved OEMs + local specialist contractors)",
+    maintenanceModel: "Mixed",
+    buyingModel: "Term framework agreements + call-off work orders",
+    priorityLevel: "Medium–High",
+    opportunitySize: "Medium–Large",
+    plannedProjects: "Summer reliability readiness; water-loss reduction; corrosion mitigation",
+    benchmarkingSummary: "Oman LNG; OQ downstream assets; major onshore gas/oil operators in Oman"
+  },
+  {
+    sno: 24,
+    customerName: "Electricity and Water Authority (EWA) – Bahrain",
+    parentGroup: "Government of Bahrain",
+    country: "Bahrain",
+    city: "Manama / Zayed Town (HQ)",
+    coreIndustry: "Energy & Power",
+    facilityType: "Utility Authority (Electricity & Water)",
+    installedCT: "2–6 installations; ~10–30 cells total",
+    keyContact: "General Contact",
+    designation: "Customer Care / Corporate Enquiries",
+    email: "customercare@ewa.bh",
+    phone: "+973 1751 5555",
+    linkedin: "https://www.linkedin.com/company/electricity-and-water-authority-bahrain/",
+    website: "ewa.bh",
+    primaryNeedFocus: "Services",
+    keyProductNeeds: "Drift-loss monitoring + compliance spares; dosing/skid spares",
+    keyServiceNeeds: "Utility-wide cooling-asset audit; water-chemistry governance",
+    decisionMakers: "Asset Management (Generation/Water) + Procurement/Contracts",
+    currentSupplier: "Multi-vendor (frameworks)",
+    maintenanceModel: "Mixed",
+    buyingModel: "Framework agreements + call-offs",
+    priorityLevel: "Medium–High",
+    opportunitySize: "Medium–Large",
+    plannedProjects: "Peak-summer reliability; water-loss reduction; refurbishment cycles",
+    benchmarkingSummary: "Regional water/electricity authorities and IWPP owners"
+  },
+  {
+    sno: 25,
+    customerName: "Bapco Refining (Bahrain Petroleum Company)",
+    parentGroup: "Bapco Energies (state-owned)",
+    country: "Bahrain",
+    city: "Sitra Refinery / Awali–Sitra corridor",
+    coreIndustry: "Oil & Gas",
+    facilityType: "Refinery",
+    installedCT: "2–3 large cooling towers; ~10–18 cells total",
+    keyContact: "General Contact",
+    designation: "Corporate / Enquiries",
+    email: "info@bapco.net",
+    phone: "+973 1775 5555",
+    linkedin: "https://www.linkedin.com/company/bapco-energies/",
+    website: "bapco.net",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Corrosion-resistant internals; side-stream filtration",
+    keyServiceNeeds: "Turnaround cell overhaul; cooling-water treatment tuning",
+    decisionMakers: "Utilities/Offsites Head + Refinery Procurement/Contracts",
+    currentSupplier: "Multi-vendor",
+    maintenanceModel: "Mixed",
+    buyingModel: "Turnaround project + term service framework",
+    priorityLevel: "High",
+    opportunitySize: "Large",
+    plannedProjects: "Refinery modernization/expansion; summer performance; reliability",
+    benchmarkingSummary: "Gulf refineries (ENOC, ADNOC, Aramco JVs)"
+  },
+  {
+    sno: 26,
+    customerName: "Aluminium Bahrain (ALBA)",
+    parentGroup: "Mumtalakat; Ma'aden; public shareholders",
+    country: "Bahrain",
+    city: "Askar Industrial Area",
+    coreIndustry: "Manufacturing (Metals – Aluminium)",
+    facilityType: "Aluminium Smelter Complex + Captive Power",
+    installedCT: "4–8 cooling towers; ~24–60 cells total",
+    keyContact: "General Contact",
+    designation: "Corporate / Enquiries",
+    email: "info@alba.com.bh",
+    phone: "+973 1783 0000",
+    linkedin: "https://www.linkedin.com/company/aluminium-bahrain/",
+    website: "albasmelter.com",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "High-capacity fan-drive spares + vibration kits; basin liner/repair materials",
+    keyServiceNeeds: "Basin desilting + cell refurbishment program; closed-loop water-treatment optimization",
+    decisionMakers: "Utilities Manager + Maintenance Manager (Utilities) + Procurement",
+    currentSupplier: "Multi-vendor",
+    maintenanceModel: "Mixed",
+    buyingModel: "Multi-year framework + outage work orders",
+    priorityLevel: "High",
+    opportunitySize: "Large",
+    plannedProjects: "Production ramp/peak summer; energy optimization; corrosion/scale control",
+    benchmarkingSummary: "GCC aluminium smelters (EGA, Sohar Aluminium)"
+  },
+  {
+    sno: 27,
+    customerName: "Shargh Cement (Iran)",
+    parentGroup: "Public Joint Stock / local shareholders",
+    country: "Iran",
+    city: "Mashhad (Khorasan Province)",
+    coreIndustry: "Manufacturing (Cement)",
+    facilityType: "Cement Plant / Clinker & Grinding",
+    installedCT: "1–2 small cooling towers; ~2–6 cells total",
+    keyContact: "General Contact",
+    designation: "Corporate / Enquiries",
+    email: "info@sharghcement.ir",
+    phone: "+98 51 1844 9956",
+    linkedin: "N/A",
+    website: "sharghcement.ir",
+    primaryNeedFocus: "Services",
+    keyProductNeeds: "Dust-tolerant louvers/screens; basic fan/motor spares",
+    keyServiceNeeds: "Seasonal cleaning (dust fouling) + water-treatment dosing",
+    decisionMakers: "Plant Maintenance Manager + Procurement",
+    currentSupplier: "Local contractor",
+    maintenanceModel: "Mixed",
+    buyingModel: "Spot + annual maintenance package",
+    priorityLevel: "Medium",
+    opportunitySize: "Small–Medium",
+    plannedProjects: "Summer peak temperatures; water constraints; planned maintenance",
+    benchmarkingSummary: "Regional cement plants in Iran/Oman"
+  },
+  {
+    sno: 28,
+    customerName: "Khorasan Petrochemical Company (Iran)",
+    parentGroup: "Public company (NPC-founded)",
+    country: "Iran",
+    city: "Bojnord (Bojnord–Shirvan road)",
+    coreIndustry: "Manufacturing (Fertilizers/Chemicals)",
+    facilityType: "Petrochemical Plant (Ammonia/Urea/Melamine)",
+    installedCT: "2–3 cooling towers; ~10–18 cells total",
+    keyContact: "General Contact",
+    designation: "Corporate / Enquiries",
+    email: "info@khpc.ir",
+    phone: "+98 58 3222 1900",
+    linkedin: "https://www.linkedin.com/company/khorasan-petrochemical-company/",
+    website: "khpc.ir",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Winterization louvers (cold season) + high-efficiency fill (summer)",
+    keyServiceNeeds: "Performance test & balancing pre-summer; water-treatment program",
+    decisionMakers: "Utilities/Offsites Manager + Procurement/Contracts",
+    currentSupplier: "Multi-vendor",
+    maintenanceModel: "Mixed",
+    buyingModel: "Term framework + turnaround work orders",
+    priorityLevel: "High",
+    opportunitySize: "Medium–Large",
+    plannedProjects: "Seasonal extremes; reliability/efficiency drives; planned turnarounds",
+    benchmarkingSummary: "Fertilizer producers (QAFCO, Fertiglobe)"
+  },
+  {
+    sno: 29,
+    customerName: "National Iranian Oil Company (NIOC)",
+    parentGroup: "Government of Iran (Ministry of Petroleum)",
+    country: "Iran",
+    city: "Tehran (HQ) / national operating portfolio",
+    coreIndustry: "Oil & Gas",
+    facilityType: "National Oil Company (multi-asset operator)",
+    installedCT: "50–150 installations; ~300–900 cells total",
+    keyContact: "General Contact",
+    designation: "Corporate / International Affairs",
+    email: "info@mop-nioc-ir.com",
+    phone: "+98 21 6162 2000",
+    linkedin: "https://www.linkedin.com/company/national-iranian-oil-company/",
+    website: "nioc.ir",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Standardized CT component specifications; critical fan-drive spares framework",
+    keyServiceNeeds: "National framework for refurbishment vendors; performance audits",
+    decisionMakers: "Central Procurement + Asset/Utilities Heads (site-level)",
+    currentSupplier: "Multi-vendor",
+    maintenanceModel: "Mixed",
+    buyingModel: "National framework + site call-offs",
+    priorityLevel: "High",
+    opportunitySize: "Large",
+    plannedProjects: "Capacity debottlenecks; reliability; water-loss reduction",
+    benchmarkingSummary: "Regional NOCs (QatarEnergy, ADNOC, Aramco)"
+  },
+  {
+    sno: 30,
+    customerName: "Persian Gulf Petrochemical Industries Company (PGPIC)",
+    parentGroup: "Petrochemical holding (Iran)",
+    country: "Iran",
+    city: "Tehran (HQ) / multiple industrial zones",
+    coreIndustry: "Manufacturing (Petrochemicals)",
+    facilityType: "Holding Company (multiple subsidiaries)",
+    installedCT: "20–60 installations; ~120–360 cells total",
+    keyContact: "General Contact",
+    designation: "Corporate / Enquiries",
+    email: "info@pgpic.ir",
+    phone: "+98 21 8871 0000",
+    linkedin: "https://www.linkedin.com/company/persian-gulf-petrochemical-industries-company/",
+    website: "pgpic.ir",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Group-wide drift/corrosion retrofit kits; standardized fan-drive spares",
+    keyServiceNeeds: "Multi-site performance benchmarking + prioritized refurb; water-chemistry governance",
+    decisionMakers: "Group Technical/Operations + Central Procurement",
+    currentSupplier: "Multi-vendor",
+    maintenanceModel: "Mixed",
+    buyingModel: "Group framework + subsidiary work orders",
+    priorityLevel: "High",
+    opportunitySize: "Large",
+    plannedProjects: "Reliability/efficiency programs; multi-site turnarounds; water-loss reduction",
+    benchmarkingSummary: "Large petrochemical holdings (SABIC, ADNOC downstream)"
+  },
+  {
+    sno: 31,
+    customerName: "Mobarakeh Steel Company (MSC)",
+    parentGroup: "Public company (Iran)",
+    country: "Iran",
+    city: "Near Mobarakeh / Isfahan Province",
+    coreIndustry: "Manufacturing (Steel)",
+    facilityType: "Integrated Steel Plant",
+    installedCT: "6–12 cooling towers; ~40–100 cells total",
+    keyContact: "General Contact",
+    designation: "Corporate / Enquiries",
+    email: "info@msc.ir",
+    phone: "+98 31 3527 0000",
+    linkedin: "https://www.linkedin.com/company/mobarakeh-steel-company/",
+    website: "msc.ir",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "High-capacity basin sludge removal accessories; side-stream filtration",
+    keyServiceNeeds: "Cooling-water solids management program; refurbishment of high-load cells",
+    decisionMakers: "Utilities/Water Systems Head + Maintenance + Procurement",
+    currentSupplier: "Multi-vendor",
+    maintenanceModel: "Mixed",
+    buyingModel: "Framework + outage work orders",
+    priorityLevel: "High",
+    opportunitySize: "Large",
+    plannedProjects: "Throughput increases; water reuse; reliability of process cooling",
+    benchmarkingSummary: "Other integrated steelworks (Esfahan Steel, ERDEMIR)"
+  },
+  {
+    sno: 32,
+    customerName: "National Iranian Copper Industries Company (NICICO)",
+    parentGroup: "State-linked public company (Iran)",
+    country: "Iran",
+    city: "Tehran (HQ) / mining & smelting sites (Kerman/Rafsanjan)",
+    coreIndustry: "Manufacturing / Mining (Metals – Copper)",
+    facilityType: "Mining + Concentrator + Smelter / Industrial Facilities",
+    installedCT: "5–20 cooling towers; ~20–120 cells total",
+    keyContact: "General Contact",
+    designation: "Corporate / Enquiries",
+    email: "info@nicico.com",
+    phone: "+98 21 8213 8000",
+    linkedin: "https://www.linkedin.com/company/nicico/",
+    website: "nicico.com",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Scale-resistant fill/internals; abrasion/dust protection accessories",
+    keyServiceNeeds: "Water-treatment and scaling control; periodic cleaning to remove mineral deposits",
+    decisionMakers: "Site Utilities Manager + Procurement/Contracts",
+    currentSupplier: "Multi-vendor",
+    maintenanceModel: "Mixed",
+    buyingModel: "Framework + site call-offs",
+    priorityLevel: "Medium–High",
+    opportunitySize: "Medium–Large",
+    plannedProjects: "Throughput expansion; water constraints; scaling-driven performance loss",
+    benchmarkingSummary: "Large mining/metals operators in Iran/Oman"
+  },
+  {
+    sno: 33,
+    customerName: "Sohar Aluminium",
+    parentGroup: "OQ (40%); TAQA (40%); Rio Tinto (20%)",
+    country: "Oman",
+    city: "Sohar Industrial Area / Port of Sohar",
+    coreIndustry: "Manufacturing",
+    facilityType: "Aluminium Smelter Complex + Captive Power/Utilities",
+    installedCT: "1–3 installations; ~6–18 cells total",
+    keyContact: "General Contact",
+    designation: "Corporate Enquiries / Procurement Routing",
+    email: "info@sohar-aluminium.com",
+    phone: "+968 2686 3000",
+    linkedin: "https://www.linkedin.com/company/sohar-aluminium/",
+    website: "sohar-aluminium.com",
+    primaryNeedFocus: "Both",
+    keyProductNeeds: "Corrosion-resistant internals/fasteners; fan-drive reliability spares",
+    keyServiceNeeds: "Targeted cell refurbishment; recirculating-loop chemistry optimization",
+    decisionMakers: "Utilities/Power Manager; Maintenance Manager; Procurement/Vendor Mgmt",
+    currentSupplier: "Multi-vendor",
+    maintenanceModel: "Mixed",
+    buyingModel: "Approved-vendor framework + shutdown work orders",
+    priorityLevel: "Medium–High",
+    opportunitySize: "Medium–Large",
+    plannedProjects: "Summer reliability; corrosion mitigation; utility efficiency programs",
+    benchmarkingSummary: "EGA; ALBA; Vale Oman (Sohar)"
+  }
 ]
 
 // Group colors for visual distinction
@@ -511,15 +942,9 @@ const groupColors: Record<string, { bg: string; header: string }> = {
   'CMI Insights': { bg: 'bg-rose-50', header: 'bg-rose-100' },
 }
 
-interface TableSectionProps {
-  title: string
-  columns: typeof proposition1Columns
-  data: typeof sampleData
-  isOpen: boolean
-  onToggle: () => void
-}
+export default function CustomerIntelligenceTables({ title, height }: CustomerIntelligenceTablesProps) {
+  const [isOpen, setIsOpen] = useState(true)
 
-function TableSection({ title, columns, data, isOpen, onToggle }: TableSectionProps) {
   // Calculate group spans for header
   const groups: { name: string; span: number }[] = []
   columns.forEach((col) => {
@@ -532,94 +957,6 @@ function TableSection({ title, columns, data, isOpen, onToggle }: TableSectionPr
   })
 
   return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden">
-      {/* Section Header */}
-      <button
-        onClick={onToggle}
-        className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors"
-      >
-        <h3 className="text-sm font-semibold text-gray-800">{title}</h3>
-        {isOpen ? (
-          <ChevronUp className="w-5 h-5 text-gray-500" />
-        ) : (
-          <ChevronDown className="w-5 h-5 text-gray-500" />
-        )}
-      </button>
-
-      {/* Table Content */}
-      {isOpen && (
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs border-collapse" style={{ minWidth: columns.reduce((acc, col) => acc + col.width, 0) }}>
-            {/* Group Header Row */}
-            <thead>
-              <tr>
-                {groups.map((group, idx) => {
-                  const colors = groupColors[group.name] || { bg: 'bg-gray-50', header: 'bg-gray-100' }
-                  return (
-                    <th
-                      key={idx}
-                      colSpan={group.span}
-                      className={`${colors.header} border border-gray-300 px-2 py-2 text-center font-semibold text-gray-700`}
-                    >
-                      {group.name}
-                    </th>
-                  )
-                })}
-              </tr>
-              {/* Column Header Row */}
-              <tr>
-                {columns.map((col, idx) => {
-                  const colors = groupColors[col.group] || { bg: 'bg-gray-50', header: 'bg-gray-100' }
-                  return (
-                    <th
-                      key={idx}
-                      className={`${colors.bg} border border-gray-300 px-2 py-2 text-left font-medium text-gray-600`}
-                      style={{ minWidth: col.width, maxWidth: col.width }}
-                    >
-                      {col.header}
-                    </th>
-                  )
-                })}
-              </tr>
-            </thead>
-            {/* Data Rows */}
-            <tbody>
-              {data.map((row, rowIdx) => (
-                <tr key={rowIdx} className={rowIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                  {columns.map((col, colIdx) => (
-                    <td
-                      key={colIdx}
-                      className="border border-gray-200 px-2 py-2 text-gray-700"
-                      style={{ minWidth: col.width, maxWidth: col.width }}
-                    >
-                      {row[col.key as keyof typeof row]}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
-  )
-}
-
-export default function CustomerIntelligenceTables({ title, height }: CustomerIntelligenceTablesProps) {
-  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
-    proposition1: true,
-    proposition2: false,
-    proposition3: false,
-  })
-
-  const toggleSection = (section: string) => {
-    setOpenSections((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }))
-  }
-
-  return (
     <div className="space-y-4">
       {title && (
         <div className="flex items-center justify-between">
@@ -627,30 +964,97 @@ export default function CustomerIntelligenceTables({ title, height }: CustomerIn
         </div>
       )}
 
-      <div className="space-y-4">
-        <TableSection
-          title="Proposition 1"
-          columns={proposition1Columns}
-          data={sampleData}
-          isOpen={openSections.proposition1}
-          onToggle={() => toggleSection('proposition1')}
-        />
+      <div className="border border-gray-200 rounded-lg overflow-hidden">
+        {/* Section Header */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors"
+        >
+          <h3 className="text-sm font-semibold text-gray-800">Customer Intelligence Database ({customerData.length} customers)</h3>
+          {isOpen ? (
+            <ChevronUp className="w-5 h-5 text-gray-500" />
+          ) : (
+            <ChevronDown className="w-5 h-5 text-gray-500" />
+          )}
+        </button>
 
-        <TableSection
-          title="Proposition 2"
-          columns={proposition2Columns}
-          data={sampleData}
-          isOpen={openSections.proposition2}
-          onToggle={() => toggleSection('proposition2')}
-        />
-
-        <TableSection
-          title="Proposition 3"
-          columns={proposition3Columns}
-          data={sampleData}
-          isOpen={openSections.proposition3}
-          onToggle={() => toggleSection('proposition3')}
-        />
+        {/* Table Content */}
+        {isOpen && (
+          <div className="overflow-x-auto" style={{ maxHeight: height ? height - 60 : 600 }}>
+            <table className="w-full text-xs border-collapse" style={{ minWidth: columns.reduce((acc, col) => acc + col.width, 0) }}>
+              {/* Group Header Row */}
+              <thead className="sticky top-0 z-10">
+                <tr>
+                  {groups.map((group, idx) => {
+                    const colors = groupColors[group.name] || { bg: 'bg-gray-50', header: 'bg-gray-100' }
+                    return (
+                      <th
+                        key={idx}
+                        colSpan={group.span}
+                        className={`${colors.header} border border-gray-300 px-2 py-2 text-center font-semibold text-gray-700`}
+                      >
+                        {group.name}
+                      </th>
+                    )
+                  })}
+                </tr>
+                {/* Column Header Row */}
+                <tr>
+                  {columns.map((col, idx) => {
+                    const colors = groupColors[col.group] || { bg: 'bg-gray-50', header: 'bg-gray-100' }
+                    return (
+                      <th
+                        key={idx}
+                        className={`${colors.bg} border border-gray-300 px-2 py-2 text-left font-medium text-gray-600`}
+                        style={{ minWidth: col.width, maxWidth: col.width }}
+                      >
+                        {col.header}
+                      </th>
+                    )
+                  })}
+                </tr>
+              </thead>
+              {/* Data Rows */}
+              <tbody>
+                {customerData.map((row, rowIdx) => (
+                  <tr key={rowIdx} className={rowIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                    {columns.map((col, colIdx) => (
+                      <td
+                        key={colIdx}
+                        className="border border-gray-200 px-2 py-2 text-gray-700"
+                        style={{ minWidth: col.width, maxWidth: col.width }}
+                      >
+                        {col.key === 'linkedin' || col.key === 'website' ? (
+                          row[col.key as keyof typeof row] && row[col.key as keyof typeof row] !== 'N/A' ? (
+                            <a
+                              href={String(row[col.key as keyof typeof row]).startsWith('http') ? String(row[col.key as keyof typeof row]) : `https://${row[col.key as keyof typeof row]}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:underline"
+                            >
+                              {col.key === 'linkedin' ? 'LinkedIn' : 'Website'}
+                            </a>
+                          ) : (
+                            'N/A'
+                          )
+                        ) : col.key === 'email' ? (
+                          <a
+                            href={`mailto:${row[col.key as keyof typeof row]}`}
+                            className="text-blue-600 hover:underline"
+                          >
+                            {row[col.key as keyof typeof row]}
+                          </a>
+                        ) : (
+                          row[col.key as keyof typeof row]
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   )

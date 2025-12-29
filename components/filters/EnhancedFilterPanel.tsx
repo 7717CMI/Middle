@@ -246,31 +246,16 @@ export function EnhancedFilterPanel() {
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-2.5 space-y-2">
-      {/* Data Type Selection */}
+      {/* Data Type - Value only */}
       <div>
         <label className="text-xs font-medium text-black uppercase">
           Data Type
         </label>
         <div className="flex gap-1 mt-1">
           <button
-            onClick={() => updateFilters({ dataType: 'value' })}
-            className={`flex-1 px-3 py-1.5 text-sm rounded ${
-              filters.dataType === 'value'
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-black hover:bg-gray-200'
-            }`}
+            className="flex-1 px-3 py-1.5 text-sm rounded bg-blue-600 text-white"
           >
             Value
-          </button>
-          <button
-            onClick={() => updateFilters({ dataType: 'volume' })}
-            className={`flex-1 px-3 py-1.5 text-sm rounded ${
-              filters.dataType === 'volume'
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-black hover:bg-gray-200'
-            }`}
-          >
-            Volume
           </button>
         </div>
       </div>
